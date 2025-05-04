@@ -1,0 +1,35 @@
+name: CI
+on: [pull_request]
+
+jobs:
+  setup:
+    runs-on: ubuntu-latest
+    outputs:
+      cache-key: ${{ steps.cache.outputs.cache-hit }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ".node-version"
+          cache: "pnpm"
+      - uses: pnpm/action-setup@v4
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+  typecheck:
+    needs: setup
+    runs-on: ubuntu-latest
+    steps:
+      - run: pnpm typecheck
+
+  eslint:
+    needs: setup
+    runs-on: ubuntu-latest
+    steps:
+      - run: pnpm lint
+
+  prettier:
+    needs: setup
+    runs-on: ubuntu-latest
+    steps:
+      - run: pnpm format
