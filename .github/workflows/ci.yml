@@ -7,6 +7,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - uses: pnpm/action-setup@v4
         with:
@@ -30,4 +32,4 @@ jobs:
         run: pnpm format:check
 
       - name: Commitlint
-        run: pnpm commitlint --from ${{ github.event.pull_request.base.sha }} --to HEAD
+        run: pnpm commitlint --from ${{ github.event.pull_request.base.sha }} --to ${{ github.event.pull_request.head.sha }}
