@@ -2,13 +2,13 @@
 
 > **Version Compatibility**
 >
-> - Tested with **husky** v9+, **lint‑staged** v15+, **Commitlint** v19+.
-> - Node.js 16 or later is recommended (officially supported).
+> - Tested with **husky** v9+, **lint‑staged** v15+, **Commitlint** v19+.
+> - Node.js 16 or later is recommended (officially supported).
 > - Commitizen and Commitlint are kept in sync via `@commitlint/cz-commitlint`.
 
 ## Purpose
 
-This document explains how **husky**, **lint‑staged**, **Prettier**, **ESLint**, **Commitizen**, and **Commitlint** are integrated into the commit workflow so developers can keep clean code and correct commit messages **without breaking their flow**.
+This document explains how **husky**, **lint‑staged**, **Prettier**, **ESLint**, **Commitizen**, and **Commitlint** are integrated into the commit workflow so developers can keep clean code and correct commit messages **without breaking their flow**. These tools ensure code quality and consistency across the project, including when working with Electron multi-process architecture as described in @/docs/shared-config.md.
 
 ### Why do we need them?
 
@@ -20,11 +20,11 @@ This document explains how **husky**, **lint‑staged**, **Prettier**, **ESLint*
 
 | Tool            | Role / What                                                                                                                                          | Purpose in this project / Why                                                                       |
 | --------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- |
-| **husky**       | Lightweight runtime for managing Git hooks (e.g., `pre-commit`, `commit-msg`). Automatically sets `core.hooksPath` and simplifies hook distribution. | Runs the formatter and linters before each commit and validates commit messages to enforce quality. |
+| **husky**       | Lightweight runtime for managing Git hooks (e.g., `pre-commit`, `commit-msg`). Automatically sets `core.hooksPath` and simplifies hook distribution. | Runs the formatter and linters before each commit and validates commit messages to enforce quality. |
 | **lint‑staged** | Utility that runs commands in parallel only on **staged** files.                                                                                     | Executes Prettier and ESLint on the minimum necessary file set to keep commit delays low.           |
 | **Prettier**    | Opinionated code formatter with minimal configuration that enforces a consistent style.                                                              | Removes style debates and eliminates whitespace comments in pull‑requests.                          |
 | **ESLint**      | Static analysis tool for JavaScript/TypeScript that detects bugs and anti‑patterns.                                                                  | Uses custom and official rules to catch potential bugs before CI.                                   |
-| **Commitizen**  | CLI (`git cz` / `pnpm commit`) that generates Conventional Commits messages through an interactive prompt.                                           | Enables developers to create correct commit messages without memorizing the spec.                   |
+| **Commitizen**  | CLI (`git cz` / `pnpm commit`) that generates Conventional Commits messages through an interactive prompt.                                           | Enables developers to create correct commit messages without memorizing the spec.                   |
 | **Commitlint**  | Lints commit messages and enforces compliance with Conventional Commits.                                                                             | Blocks non‑conforming commits via the `commit-msg` hook and re‑checks them in CI.                   |
 
 ## Tool interaction diagram
@@ -41,17 +41,20 @@ flowchart TD
   CL -->|pass| G[Commit Completed]
 ```
 
-### Pre‑commit Hooks (husky + lint‑staged)
+### Pre‑commit Hooks (husky + lint‑staged)
 
-Husky’s **`pre-commit`** hook calls `lint‑staged`, which runs **Prettier → ESLint** in that order on staged files only. The hook is automatically set up via the `prepare` script during `pnpm install`.
+Husky's **`pre-commit`** hook calls `lint‑staged`, which runs **Prettier → ESLint** in that order on staged files only. The hook is automatically set up via the `prepare` script during `pnpm install`. This ensures each commit maintains consistent code quality, especially important when working with Electron's multi-process architecture described in @/docs/shared-config.md.
 
-### Commit Convention (Commitizen + Commitlint)
+### Commit Convention (Commitizen + Commitlint)
 
 Developers run `git cz` or `pnpm commit` to create a Conventional Commits message via an interactive prompt. The `commit-msg` hook then verifies the message with Commitlint.
 
-### Formatting & Linting
+### Formatting & Linting
 
-Running `pnpm format:fix` or `pnpm lint:fix` applies Prettier and ESLint to **all** files.
+Running `pnpm format` or `pnpm lint` applies Prettier and ESLint to **all** files. These commands are also useful for:
+
+- Ensuring consistent TypeScript configuration across main and renderer processes as per @/docs/shared-config.md
+- Maintaining internationalization strings and structure according to @/docs/i18n.md
 
 ## Workflow steps (summary)
 
@@ -64,3 +67,10 @@ Running `pnpm format:fix` or `pnpm lint:fix` applies Prettier and ESLint to **al
 
 - **Git hooks are not running** — Check `git config --get core.hooksPath` and verify that it points to the `.husky` directory.
 - **`git cz` fails with `ENOENT`** — Use `pnpm commit` or set an alias: `git config --add alias.cz "!pnpm commit"`.
+- **ESLint errors in Electron code** — Refer to @/docs/shared-config.md for best practices regarding Electron multi-process architecture.
+- **i18n related formatting issues** — Check @/docs/i18n.md for proper internationalization patterns.
+
+## Related Documents
+
+- @/docs/shared-config.md - Electron process communication and configuration management
+- @/docs/i18n.md - Internationalization implementation details
