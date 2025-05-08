@@ -69,12 +69,12 @@ tags: [electron, ai-ready, ipc, typesafe, trpc]
 
 ```text
 project-root/
-├── electron/
+├── src/
 │   ├── main/               # IPC ハンドラ & tRPC ルーター
-│   └── preload/            # contextBridge で API 公開
-├── src/renderer/            # React など UI
-│   └── services/           # window.api.* / trpc.* 呼び出し
-├── shared/                  # ipc-schema.ts など 共有型
+│   ├── preload/            # contextBridge で API 公開
+│   ├── renderer/           # React など UI
+│   ├── services/           # window.api.* / trpc.* 呼び出し
+│   └── shared/             # ipc-schema.ts など 共有型
 ├── docs/
 │   ├── 00_map.md           # ドキュメント一覧
 │   ├── 01_ipc.md           # ★ 本書
