@@ -1,71 +1,272 @@
 import { ModeToggle } from "@/components/mode-toggle";
 import { Button } from "@/components/ui/button";
-import { IconBrandReact, IconBrandTypescript } from "@tabler/icons-react";
-import { useState } from "react";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Input } from "@/components/ui/input";
+import { Separator } from "@/components/ui/separator";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { trpc } from "@/lib/trpc";
+import {
+  IconBrandReact,
+  IconBrandTypescript,
+  IconBrandVite,
+  IconPlus,
+  IconTrash,
+} from "@tabler/icons-react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import type { Todo } from "../../shared/trpc";
 
 function Versions(): React.JSX.Element {
   const [versions] = useState(window.electron.process.versions);
   return (
-    <ul className="flex flex-row justify-center gap-4 text-sm text-gray-600 dark:text-gray-400">
-      <li className="electron-version">Electron v{versions.electron}</li>
-      <li className="chrome-version">Chromium v{versions.chrome}</li>
-      <li className="node-version">Node v{versions.node}</li>
-    </ul>
+    <div className="flex flex-wrap justify-center gap-4 text-sm text-slate-600 dark:text-slate-400">
+      <div className="flex items-center gap-1.5">
+        <span className="font-medium">Electron</span>
+        <span>v{versions.electron}</span>
+      </div>
+      <div className="flex items-center gap-1.5">
+        <span className="font-medium">Chromium</span>
+        <span>v{versions.chrome}</span>
+      </div>
+      <div className="flex items-center gap-1.5">
+        <span className="font-medium">Node</span>
+        <span>v{versions.node}</span>
+      </div>
+    </div>
   );
 }
 
 function App(): React.JSX.Element {
-  const ipcHandle = (): void => window.electron.ipcRenderer.send("ping");
+  const fetchedRef = useRef(false);
+  const [tasks, setTasks] = useState<Todo[]>([]);
+  const [newTitle, setNewTitle] = useState("");
+  const pingHandle = async (): Promise<void> => {
+    const res = await trpc.ping.query();
+    console.log("[renderer] ", res);
+  };
+  const handleToggle = async (
+    id: string,
+    completed: boolean,
+  ): Promise<void> => {
+    try {
+      await trpc.task.toggle.mutate({ id, completed });
+      setTasks((prev) =>
+        prev.map((t) => (t.id === id ? { ...t, completed } : t)),
+      );
+    } catch (err) {
+      console.error("toggle error", err);
+    }
+  };
+
+  const handleAdd = async (): Promise<void> => {
+    const title = newTitle.trim();
+    if (!title) return;
+    try {
+      const newTodo = await trpc.task.add.mutate({ title });
+      setTasks((prev) => [...prev, newTodo]);
+      setNewTitle("");
+    } catch (err) {
+      console.error("add error", err);
+    }
+  };
+
+  const handleDelete = useCallback(async (id: string) => {
+    try {
+      await trpc.task.remove.mutate({ id });
+      setTasks((prev) => prev.filter((t) => t.id !== id));
+    } catch (err) {
+      console.error("remove error", err);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (fetchedRef.current) return;
+    fetchedRef.current = true;
+    (async () => {
+      const current = await trpc.task.list.query();
+      if (current.length === 0) {
+        const newTodo = await trpc.task.add.mutate({ title: "First Task" });
+        setTasks([newTodo]);
+      } else {
+        setTasks(current);
+      }
+      console.log("[Renderer] tasks:", current);
+    })();
+  }, []);
+
   return (
-    <main className="relative flex min-h-screen flex-col items-center justify-center bg-gray-100 px-4 dark:bg-gray-900">
-      <div className="absolute top-4 right-4">
-        <ModeToggle />
-      </div>
-      <section className="w-full max-w-2xl space-y-6 rounded-lg bg-white p-8 text-center shadow dark:bg-gray-800">
-        <h3 className="text-xl font-semibold text-gray-900 dark:text-gray-100">
-          Powered by{" "}
-          <span className="text-indigo-600 dark:text-indigo-400">
-            electron‑vite
-          </span>
-        </h3>
-
-        <p className="text-gray-700 dark:text-gray-300">
-          Build an Electron app with
-          <span className="font-medium">
-            <IconBrandReact className="mx-1 mb-1 inline-block" />
-            React
-          </span>
-          &nbsp;and{" "}
-          <span className="font-medium">
-            <IconBrandTypescript className="mx-1 mb-1 inline-block" />
-            TypeScript
-          </span>
-        </p>
-
-        <p className="text-sm text-gray-500">
-          Press <code>`F12`</code> or <code>`Ctrl+Shift+I`</code> to open the
-          dev&nbsp;tools
-        </p>
-
-        <Versions />
-
-        <div className="flex flex-col justify-center gap-4 sm:flex-row">
-          <Button asChild variant="outline">
-            <a
-              href="https://electron-vite.org/"
-              target="_blank"
-              rel="noreferrer"
-            >
-              Documentation
-            </a>
-          </Button>
-
-          <Button type="button" onClick={ipcHandle}>
-            Send&nbsp;IPC
-          </Button>
+    <div className="bg-background flex min-h-screen flex-col transition-colors duration-300">
+      {/* Header */}
+      <header className="bg-background/80 sticky top-0 z-10 border-b backdrop-blur-sm">
+        <div className="flex h-16 items-center justify-between px-4">
+          <div className="ml-auto">
+            <ModeToggle />
+          </div>
         </div>
-      </section>
-    </main>
+      </header>
+
+      {/* Main content */}
+      <main className="container mx-auto flex-1 px-4 py-8">
+        <Tabs defaultValue="about" className="w-full">
+          <TabsList className="mb-6 w-full justify-start">
+            <TabsTrigger value="about">About</TabsTrigger>
+            <TabsTrigger value="todos">Todos</TabsTrigger>
+          </TabsList>
+
+          <TabsContent value="todos" className="space-y-6">
+            <Card>
+              <CardHeader>
+                <CardTitle>Todos</CardTitle>
+                <CardDescription>Manage your tasks with tRPC</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="flex gap-2">
+                  <Input
+                    type="text"
+                    value={newTitle}
+                    onChange={(e) => setNewTitle(e.target.value)}
+                    placeholder="New task title"
+                    onKeyDown={(e) => e.key === "Enter" && handleAdd()}
+                    className="flex-1"
+                  />
+                  <Button
+                    type="button"
+                    onClick={handleAdd}
+                    className="cursor-pointer"
+                  >
+                    <IconPlus /> Add
+                  </Button>
+                </div>
+
+                {tasks.length > 0 ? (
+                  <div className="rounded-md border">
+                    {tasks.map((task, index) => (
+                      <div key={task.id}>
+                        {index > 0 && <Separator />}
+                        <div className="flex items-center justify-between p-4">
+                          <div className="flex items-center gap-3">
+                            <Checkbox
+                              id={`task-${task.id}`}
+                              checked={task.completed}
+                              onCheckedChange={(checked) =>
+                                handleToggle(task.id, checked === true)
+                              }
+                            />
+                            <label
+                              htmlFor={`task-${task.id}`}
+                              className={`text-sm leading-none font-medium peer-disabled:cursor-not-allowed peer-disabled:opacity-70 ${
+                                task.completed
+                                  ? "text-muted-foreground line-through"
+                                  : "text-foreground"
+                              }`}
+                            >
+                              {task.title}
+                            </label>
+                          </div>
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            onClick={() => handleDelete(task.id)}
+                            className="text-muted-foreground hover:text-destructive h-8 w-8 cursor-pointer"
+                          >
+                            <IconTrash className="h-4 w-4" />
+                            <span className="sr-only">Delete</span>
+                          </Button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="bg-muted rounded-md p-4 text-center">
+                    <p className="text-muted-foreground text-sm">
+                      No tasks yet. Add one to get started.
+                    </p>
+                  </div>
+                )}
+              </CardContent>
+              <CardFooter className="text-muted-foreground text-xs">
+                {tasks.length} {tasks.length === 1 ? "task" : "tasks"} total
+              </CardFooter>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="about" className="space-y-6">
+            <Card>
+              <CardHeader>
+                <CardTitle>About</CardTitle>
+                <CardDescription>
+                  Information about this application
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="flex items-center gap-3 py-2">
+                  <div className="flex items-center">
+                    <IconBrandReact className="mr-1.5 h-5 w-5 text-blue-500" />
+                    <span className="font-medium">React</span>
+                  </div>
+                  <span className="text-muted-foreground">+</span>
+                  <div className="flex items-center">
+                    <IconBrandTypescript className="mr-1.5 h-5 w-5 text-blue-700" />
+                    <span className="font-medium">TypeScript</span>
+                  </div>
+                  <span className="text-muted-foreground">+</span>
+                  <div className="flex items-center">
+                    <IconBrandVite className="mr-1.5 h-5 w-5 text-blue-500" />
+                    <span className="font-medium">Vite</span>
+                  </div>
+                </div>
+
+                <div className="bg-muted text-muted-foreground rounded-md p-3 text-xs">
+                  Press{" "}
+                  <kbd className="bg-muted text-muted-foreground pointer-events-none inline-flex h-5 items-center gap-1 rounded border px-1.5 font-mono text-[10px] font-medium opacity-100 select-none">
+                    F12
+                  </kbd>{" "}
+                  or{" "}
+                  <kbd className="bg-muted text-muted-foreground pointer-events-none inline-flex h-5 items-center gap-1 rounded border px-1.5 font-mono text-[10px] font-medium opacity-100 select-none">
+                    Ctrl+Shift+I
+                  </kbd>{" "}
+                  to open the dev&nbsp;tools
+                </div>
+
+                <Separator />
+
+                <Versions />
+              </CardContent>
+              <CardFooter className="flex flex-col gap-2 sm:flex-row">
+                <Button
+                  asChild
+                  variant="outline"
+                  className="flex-1 justify-center"
+                >
+                  <a
+                    href="https://electron-vite.org/"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    Documentation
+                  </a>
+                </Button>
+
+                <Button
+                  type="button"
+                  onClick={pingHandle}
+                  className="flex-1 justify-center"
+                >
+                  Send IPC
+                </Button>
+              </CardFooter>
+            </Card>
+          </TabsContent>
+        </Tabs>
+      </main>
+    </div>
   );
 }
 
