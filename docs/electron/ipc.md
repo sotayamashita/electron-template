@@ -45,11 +45,6 @@ tags: [electron, ai-ready, ipc, typesafe, trpc]
   - 役割: 型安全 RPC ルーター
   - 選定理由: 大規模・多チャネルに強い
   - 推奨バージョン: ^11.x
-- `electron-trpc`
-  - npm パッケージ: `electron-trpc`
-  - 役割: tRPC を IPC に橋渡し
-  - 選定理由: ルーター定義を再利用
-  - 推奨バージョン: ^0.7
 - `typed-ipc`
   - npm パッケージ: `@electron-toolkit/typed-ipc`
   - 役割: 軽量チャネル型付け
@@ -64,17 +59,23 @@ tags: [electron, ai-ready, ipc, typesafe, trpc]
 - `@electron/remote`
   - 理由: remote 復活ラッパー。型安全不可
   - 代替案: typed-ipc / tRPC
+- `@electron-trpc`
+  - 理由: tRPC v11 をサポートしていない
+  - 代替案: なし（後継候補 `trpc-electron` もメンテナンス状況が不明）
+- `trpc-electron`
+  - 理由: メンテナンス状況が不透明（2024 年以降コミットなし）
+  - 代替案: tRPC Core + 独自 IPC アダプタ
 
 ## 4. ディレクトリ構造
 
 ```text
 project-root/
-├── electron/
+├── src/
 │   ├── main/               # IPC ハンドラ & tRPC ルーター
-│   └── preload/            # contextBridge で API 公開
-├── src/renderer/            # React など UI
-│   └── services/           # window.api.* / trpc.* 呼び出し
-├── shared/                  # ipc-schema.ts など 共有型
+│   ├── preload/            # contextBridge で API 公開
+│   ├── renderer/           # React など UI
+│   ├── services/           # window.api.* / trpc.* 呼び出し
+│   └── shared/             # ipc-schema.ts など 共有型
 ├── docs/
 │   ├── 00_map.md           # ドキュメント一覧
 │   ├── 01_ipc.md           # ★ 本書
@@ -90,7 +91,7 @@ project-root/
   - 概要: `invoke/handle` を型付け enum でラップ
   - メリット: 依存小さく導入が容易
   - デメリット: チャネルが増えると管理負荷
-- **パターン B: tRPC (electron-trpc)**
+- **パターン B: tRPC (カスタム IPC アダプタ)**
   - 概要: ルーター+クライアントを自動生成
   - メリット: 入出力・エラーまで型安全
   - デメリット: 追加依存 (~23 KB)
@@ -125,7 +126,7 @@ graph TD
 ### 6.2 パターン B — tRPC
 
 - **設計**: `appRouter` に `query / mutation / subscription` を宣言。
-- **Main**: `createIPCHandler(router)` で一括ハンドラ化。
+- **Main**: `ipcMain.handle('trpc', ...)` で `router` を呼び出すカスタムハンドラ。
 - **Preload**: `createTRPCProxyClient` を `window.trpc` として expose。
 - **Renderer**: `trpc.user.get.query()` など関数呼び出し型で利用。
 - **ユースケース**: 外部 Web API の BFF 層や大量チャネルの CRUD。

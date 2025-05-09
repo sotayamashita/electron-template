@@ -1,7 +1,9 @@
 import { electronApp, is, optimizer } from "@electron-toolkit/utils";
-import { app, BrowserWindow, ipcMain, shell } from "electron";
+import { app, BrowserWindow, shell } from "electron";
 import { join } from "path";
 import icon from "../../resources/icon.png?asset";
+import { appRouter } from "../shared/trpc";
+import { attachTRPC } from "./trpc-ipc-adapter";
 
 function createWindow(): void {
   // Create the browser window.
@@ -49,8 +51,8 @@ app.whenReady().then(() => {
     optimizer.watchWindowShortcuts(window);
   });
 
-  // IPC test
-  ipcMain.on("ping", () => console.log("pong"));
+  // Attach tRPC router over a single IPC channel
+  attachTRPC("trpc", appRouter);
 
   createWindow();
 
