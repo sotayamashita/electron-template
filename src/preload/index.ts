@@ -3,7 +3,7 @@ import { contextBridge, ipcRenderer } from "electron";
 
 import { createTRPCClient } from "@trpc/client";
 import { observable } from "@trpc/server/observable";
-import type { AppRouter } from "../shared/trpc";
+import type { AppRouter } from "../shared/trpc.js";
 
 // Custom APIs for renderer
 // tRPC client (custom IPC link)
