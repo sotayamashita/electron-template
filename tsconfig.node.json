@@ -8,11 +8,14 @@
   ],
   "compilerOptions": {
     "composite": true,
+    "module": "NodeNext",
+    "target": "ES2022",
     // "@tailwindcss/vite" ships its typings as ESM-flavoured `*.d.mts` files.  
     // TypeScript can only resolve those when `moduleResolution` is set to
     // "bundler" (or "nodenext"/"node16"). Without it you get
     // `TS2307: Cannot find module '@tailwindcss/vite'`.
-    "moduleResolution": "bundler",
+    "moduleResolution": "NodeNext",
+    "verbatimModuleSyntax": true,
     "types": ["electron-vite/node"]
   }
 }

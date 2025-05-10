@@ -7,9 +7,25 @@ import type { PluginOption } from "vite";
 export default defineConfig({
   main: {
     plugins: [externalizeDepsPlugin()] as PluginOption[],
+    build: {
+      rollupOptions: {
+        output: {
+          format: "es",
+          entryFileNames: "index.mjs",
+        },
+      },
+    },
   },
   preload: {
     plugins: [externalizeDepsPlugin()] as PluginOption[],
+    build: {
+      rollupOptions: {
+        output: {
+          format: "es",
+          entryFileNames: "index.mjs",
+        },
+      },
+    },
   },
   renderer: {
     resolve: {
