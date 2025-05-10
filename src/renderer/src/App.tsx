@@ -20,7 +20,7 @@ import {
   IconPlus,
   IconTrash,
 } from "@tabler/icons-react";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import type { Todo } from "../../shared/trpc";
 
 function Versions(): React.JSX.Element {
@@ -44,22 +44,16 @@ function Versions(): React.JSX.Element {
 }
 
 function App(): React.JSX.Element {
-  const fetchedRef = useRef(false);
   const [tasks, setTasks] = useState<Todo[]>([]);
   const [newTitle, setNewTitle] = useState("");
   const pingHandle = async (): Promise<void> => {
     const res = await trpc.ping.query();
     console.log("[renderer] ", res);
   };
-  const handleToggle = async (
-    id: string,
-    completed: boolean,
-  ): Promise<void> => {
+  const handleToggle = async (id: string): Promise<void> => {
     try {
-      await trpc.task.toggle.mutate({ id, completed });
-      setTasks((prev) =>
-        prev.map((t) => (t.id === id ? { ...t, completed } : t)),
-      );
+      const updated = await trpc.task.toggle.mutate({ id });
+      setTasks(updated);
     } catch (err) {
       console.error("toggle error", err);
     }
@@ -69,8 +63,8 @@ function App(): React.JSX.Element {
     const title = newTitle.trim();
     if (!title) return;
     try {
-      const newTodo = await trpc.task.add.mutate({ title });
-      setTasks((prev) => [...prev, newTodo]);
+      const updated = await trpc.task.add.mutate({ title });
+      setTasks(updated);
       setNewTitle("");
     } catch (err) {
       console.error("add error", err);
@@ -79,25 +73,21 @@ function App(): React.JSX.Element {
 
   const handleDelete = useCallback(async (id: string) => {
     try {
-      await trpc.task.remove.mutate({ id });
-      setTasks((prev) => prev.filter((t) => t.id !== id));
+      const updated = await trpc.task.remove.mutate({ id });
+      setTasks(updated);
     } catch (err) {
       console.error("remove error", err);
     }
   }, []);
 
   useEffect(() => {
-    if (fetchedRef.current) return;
-    fetchedRef.current = true;
     (async () => {
-      const current = await trpc.task.list.query();
-      if (current.length === 0) {
-        const newTodo = await trpc.task.add.mutate({ title: "First Task" });
-        setTasks([newTodo]);
-      } else {
-        setTasks(current);
+      try {
+        const list = await trpc.task.list.query();
+        setTasks(list);
+      } catch (err) {
+        console.error("initial fetch error", err);
       }
-      console.log("[Renderer] tasks:", current);
     })();
   }, []);
 
@@ -155,9 +145,7 @@ function App(): React.JSX.Element {
                             <Checkbox
                               id={`task-${task.id}`}
                               checked={task.completed}
-                              onCheckedChange={(checked) =>
-                                handleToggle(task.id, checked === true)
-                              }
+                              onCheckedChange={() => handleToggle(task.id)}
                             />
                             <label
                               htmlFor={`task-${task.id}`}

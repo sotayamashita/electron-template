@@ -1,11 +1,11 @@
 import { createContext, useContext, useEffect, useState } from "react";
+import { trpc } from "../lib/trpc";
 
 type Theme = "dark" | "light" | "system";
 
 type ThemeProviderProps = {
   children: React.ReactNode;
   defaultTheme?: Theme;
-  storageKey?: string;
 };
 
 type ThemeProviderState = {
@@ -23,12 +23,21 @@ const ThemeProviderContext = createContext<ThemeProviderState>(initialState);
 export function ThemeProvider({
   children,
   defaultTheme = "system",
-  storageKey = "vite-ui-theme",
   ...props
 }: ThemeProviderProps): React.JSX.Element {
-  const [theme, setTheme] = useState<Theme>(
-    () => (localStorage.getItem(storageKey) as Theme) || defaultTheme,
-  );
+  const [theme, setThemeLocal] = useState<Theme>(defaultTheme);
+
+  // initial fetch from electron-store
+  useEffect(() => {
+    (async () => {
+      try {
+        const remote = await trpc.theme.get.query();
+        if (remote) setThemeLocal(remote as Theme);
+      } catch (err) {
+        console.error("theme get error", err);
+      }
+    })();
+  }, []);
 
   useEffect(() => {
     const root = window.document.documentElement;
@@ -50,9 +59,13 @@ export function ThemeProvider({
 
   const value = {
     theme,
-    setTheme: (theme: Theme) => {
-      localStorage.setItem(storageKey, theme);
-      setTheme(theme);
+    setTheme: async (t: Theme) => {
+      setThemeLocal(t);
+      try {
+        await trpc.theme.set.mutate(t);
+      } catch (err) {
+        console.error("theme set error", err);
+      }
     },
   };
 
