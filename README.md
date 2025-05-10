@@ -1,5 +1,7 @@
 # just-ai
 
+[![CI](https://github.com/sotayamashita/just-ai/actions/workflows/ci.yml/badge.svg)](https://github.com/sotayamashita/just-ai/actions/workflows/ci.yml)
+
 An Electron application with React and TypeScript
 
 ## Recommended IDE Setup
