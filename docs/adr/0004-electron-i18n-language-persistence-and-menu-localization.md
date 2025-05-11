@@ -24,7 +24,7 @@ Our Electron + React desktop application must support multiple languages in **
 2. **i18n libraries**
 
    - **Main process**: `i18next` + `i18next‑fs‑backend` to read JSON resources from `locales/{lng}/{ns}.json`.
-   - **Renderer**: `i18next` + `react‑i18next` with translations bundled via `@kainstar/vite-plugin-i18next-loader`.
+   - **Renderer**: `i18next` + `react‑i18next`; translations are bundled at build‑time using `import.meta.glob("/locales/**.json", { eager: true })`.
 
 3. **Initial language bootstrap**
 
@@ -70,11 +70,11 @@ Our Electron + React desktop application must support multiple languages in **
 
 ## Alternatives considered
 
-| Alternative                                      | Why rejected                                       |
-| ------------------------------------------------ | -------------------------------------------------- |
-| Fetch language via tRPC before first render      | Adds a loading splash or flicker.                  |
-| Share a single i18next instance across processes | Breaks isolation, introduces brittle global state. |
-| Use `i18next-electron-fs-backend` in renderer    | Unnecessary once resources are bundled by Vite.    |
+| Alternative                                      | Why rejected                                                           |
+| ------------------------------------------------ | ---------------------------------------------------------------------- |
+| Fetch language via tRPC before first render      | Adds a loading splash or flicker.                                      |
+| Share a single i18next instance across processes | Breaks isolation, introduces brittle global state.                     |
+| `vite-plugin-i18next-loader`                     | Adds another dependency; `import.meta.glob` now covers bundling & HMR. |
 
 ## References
 
