@@ -45,6 +45,7 @@
     "@trpc/server": "^11.1.2",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "electron-store": "^10.0.1",
     "electron-updater": "^6.6.2",
     "tailwind-merge": "^3.2.0",
     "zod": "^3.24.4"
