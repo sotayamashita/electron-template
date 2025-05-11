@@ -18,8 +18,8 @@
     "verbatimModuleSyntax": true,
     "baseUrl": ".",
     "paths": {
-      "#shared/*": ["src/shared/*"],  /* Universal shared layer */
-      "#main/*": ["src/main/*"]       /* Main process code */
+      "#shared/*": ["src/shared/*"],  /* Universal shared layer (private/internal) */
+      "@main/*": ["src/main/*"]       /* Main process code (public module) */
     },
     "types": ["electron-vite/node"]
   }

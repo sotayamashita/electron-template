@@ -13,8 +13,8 @@ export default defineConfig({
      */
     resolve: {
       alias: {
-        "#shared": resolve("src/shared"), // Universal shared layer
-        "#main": resolve("src/main"), // Main process code
+        "#shared": resolve("src/shared"), // Universal shared layer (private/internal)
+        "@main": resolve("src/main"), // Main process code (public module)
       },
     },
     build: {
@@ -34,8 +34,8 @@ export default defineConfig({
      */
     resolve: {
       alias: {
-        "#shared": resolve("src/shared"), // Universal shared layer
-        "#main": resolve("src/main"), // Main process code
+        "#shared": resolve("src/shared"), // Universal shared layer (private/internal)
+        "@main": resolve("src/main"), // Main process code (public module)
       },
     },
     build: {
@@ -58,8 +58,8 @@ export default defineConfig({
         "@": resolve("src/renderer/src"),
         "@renderer": resolve("src/renderer/src"),
         // Universal aliases (must match main & preload)
-        "#shared": resolve("src/shared"), // Universal shared layer
-        "#main": resolve("src/main"), // Main process code (only types)
+        "#shared": resolve("src/shared"), // Universal shared layer (private/internal)
+        "@main": resolve("src/main"), // Main process code (public module, types only)
       },
     },
     build: {

@@ -1,4 +1,4 @@
-import type { AppRouter } from "#main/trpc/router";
+import type { AppRouter } from "@main/trpc/router";
 import { createTRPCClient, type Operation } from "@trpc/client";
 import { observable } from "@trpc/server/observable";
 

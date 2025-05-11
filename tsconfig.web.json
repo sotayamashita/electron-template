@@ -17,8 +17,8 @@
       "@renderer/*": ["src/renderer/src/*"],
       
       /* Universal aliases (must match electron.vite.config.ts) */
-      "#shared/*": ["src/shared/*"],   /* Universal shared layer */
-      "#main/*": ["src/main/*"]        /* Main process code (only types) */
+      "#shared/*": ["src/shared/*"],   /* Universal shared layer (private/internal) */
+      "@main/*": ["src/main/*"]        /* Main process code (public module, types only) */
     }
   }
 }
