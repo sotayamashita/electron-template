@@ -76,6 +76,6 @@ In Electron applications, communication between Main and Renderer processes (IPC
 
 - @docs/electron/ipc.md
 - ADR-0003 – Persistence
-- https://github.com/sotayamashita/just-ai/pull/8
 - https://www.electronjs.org/docs/latest/tutorial/ipc
 - https://trpc.io/docs/client
+- https://github.com/sotayamashita/just-ai/pull/8
