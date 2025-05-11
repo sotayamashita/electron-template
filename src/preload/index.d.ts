@@ -1,6 +1,6 @@
 import type { ElectronAPI } from "@electron-toolkit/preload";
+import type { AppRouter } from "@main/trpc/router";
 import type { TRPCClient } from "@trpc/client";
-import type { AppRouter } from "../shared/trpc";
 
 declare global {
   interface Window {
