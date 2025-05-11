@@ -1,7 +1,6 @@
+import type { Theme } from "#shared/domain/theme";
 import { createContext, useContext, useEffect, useState } from "react";
 import { trpc } from "../lib/trpc";
-
-type Theme = "dark" | "light" | "system";
 
 type ThemeProviderProps = {
   children: React.ReactNode;

@@ -1,3 +1,4 @@
+import type { Todo } from "#shared/domain/todo";
 import { ModeToggle } from "@/components/mode-toggle";
 import { Button } from "@/components/ui/button";
 import {
@@ -21,7 +22,6 @@ import {
   IconTrash,
 } from "@tabler/icons-react";
 import { useCallback, useEffect, useState } from "react";
-import type { Todo } from "../../shared/trpc";
 
 function Versions(): React.JSX.Element {
   const [versions] = useState(window.electron.process.versions);

@@ -1,4 +1,4 @@
-import { ElectronAPI } from "@electron-toolkit/preload";
+import type { ElectronAPI } from "@electron-toolkit/preload";
 import type { TRPCClient } from "@trpc/client";
 import type { AppRouter } from "../shared/trpc";
 

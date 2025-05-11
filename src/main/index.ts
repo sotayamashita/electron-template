@@ -2,8 +2,8 @@ import { electronApp, is, optimizer } from "@electron-toolkit/utils";
 import { app, BrowserWindow, shell } from "electron";
 import { fileURLToPath } from "url";
 import icon from "../../resources/icon.png?asset";
-import { appRouter } from "../shared/trpc.js";
 import { attachTRPC } from "./trpc-ipc-adapter.js";
+import { appRouter } from "./trpc/router.js";
 
 function createWindow(): void {
   // Create the browser window.

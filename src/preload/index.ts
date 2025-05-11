@@ -1,9 +1,9 @@
 import { electronAPI } from "@electron-toolkit/preload";
 import { contextBridge, ipcRenderer } from "electron";
 
+import type { AppRouter } from "#main/trpc/router.js";
 import { createTRPCClient } from "@trpc/client";
 import { observable } from "@trpc/server/observable";
-import type { AppRouter } from "../shared/trpc.js";
 
 // Custom APIs for renderer
 // tRPC client (custom IPC link)

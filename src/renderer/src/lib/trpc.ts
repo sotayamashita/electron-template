@@ -1,6 +1,6 @@
+import type { AppRouter } from "#main/trpc/router";
 import { createTRPCClient, type Operation } from "@trpc/client";
 import { observable } from "@trpc/server/observable";
-import type { AppRouter } from "../../../shared/trpc";
 
 // Custom IPC link that calls main-process router via ipcRenderer.
 const ipcLink =

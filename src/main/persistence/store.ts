@@ -1,5 +1,5 @@
-import type { Todo } from "../../shared/trpc.js";
-import { type Theme } from "../../shared/trpc.js";
+import type { Theme } from "#shared/domain/theme.js";
+import type { Todo } from "#shared/domain/todo.js";
 
 /** Persistence schema */
 type StoreSchema = {

@@ -1,4 +1,4 @@
-import type { Todo } from "../../shared/trpc.js";
+import type { Todo } from "#shared/domain/todo.js";
 import { getStore } from "../persistence/store.js";
 
 /**

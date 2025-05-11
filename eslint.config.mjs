@@ -34,6 +34,26 @@ export default tseslint.config(
     rules: {
       ...eslintPluginReactHooks.configs.recommended.rules,
       ...eslintPluginReactRefresh.configs.vite.rules,
+      // Only forbid the root package in non‑main code.
+      "no-restricted-imports": [
+        "error",
+        {
+          paths: [
+            {
+              name: "@trpc/server",
+              message: "Import @trpc/server only inside src/main/",
+            },
+          ],
+        },
+      ],
+      // Always use `import type` for only types.
+      "@typescript-eslint/consistent-type-imports": "error",
+    },
+  },
+  {
+    files: ["src/main/**/*.{ts,tsx}"],
+    rules: {
+      "no-restricted-imports": "off",
     },
   },
   eslintConfigPrettier,
