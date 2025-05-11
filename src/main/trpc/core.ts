@@ -1,8 +1,8 @@
 import { initTRPC } from "@trpc/server";
 
 /**
- * tRPC初期化
- * - コアとなるtRPC関連のセットアップ
+ * tRPC initialization
+ * - Core tRPC setup
  */
 const t = initTRPC.create();
 

@@ -3,7 +3,7 @@ import { ThemeRepo } from "../../repository/theme-repository.js";
 import { publicProcedure, router } from "../core.js";
 
 /**
- * テーマ関連のルーター
+ * Theme router
  */
 export const themeRouter = router({
   /** Get current theme */
