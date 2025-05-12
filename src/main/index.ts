@@ -2,10 +2,34 @@ import { electronApp, is, optimizer } from "@electron-toolkit/utils";
 import { app, BrowserWindow, shell } from "electron";
 import { fileURLToPath } from "url";
 import icon from "../../resources/icon.png?asset";
+import { container } from "./di/container.js";
 import { attachTRPC } from "./trpc-ipc-adapter.js";
 import { appRouter } from "./trpc/router.js";
 
-function createWindow(): void {
+/**
+ * Initialize application services and dependencies
+ */
+async function initializeApp(): Promise<void> {
+  try {
+    // Ensure container is initialized and dependencies are ready
+    await container.getStore();
+
+    console.log("Application services initialized");
+
+    // Attach tRPC router over a single IPC channel
+    attachTRPC("trpc", appRouter);
+
+    console.log("tRPC router attached to IPC");
+  } catch (error) {
+    console.error("Failed to initialize application:", error);
+    throw error;
+  }
+}
+
+/**
+ * Create the main application window
+ */
+function createWindow(): BrowserWindow {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
     width: 900,
@@ -37,12 +61,14 @@ function createWindow(): void {
       fileURLToPath(new URL("../renderer/index.html", import.meta.url)),
     );
   }
+
+  return mainWindow;
 }
 
-// This method will be called when Electron has finished
-// initialization and is ready to create browser windows.
-// Some APIs can only be used after this event occurs.
-app.whenReady().then(() => {
+/**
+ * Configure application-wide settings
+ */
+function setupAppSettings(): void {
   // Set app user model id for windows
   electronApp.setAppUserModelId("com.electron");
 
@@ -52,17 +78,34 @@ app.whenReady().then(() => {
   app.on("browser-window-created", (_, window) => {
     optimizer.watchWindowShortcuts(window);
   });
+}
 
-  // Attach tRPC router over a single IPC channel
-  attachTRPC("trpc", appRouter);
+// Application startup sequence
+app.whenReady().then(async () => {
+  try {
+    console.log("Starting application...");
 
-  createWindow();
+    // Configure app settings
+    setupAppSettings();
 
-  app.on("activate", function () {
-    // On macOS it's common to re-create a window in the app when the
-    // dock icon is clicked and there are no other windows open.
-    if (BrowserWindow.getAllWindows().length === 0) createWindow();
-  });
+    // Initialize dependencies
+    await initializeApp();
+
+    // Create window
+    createWindow();
+
+    // macOS re-activation handler
+    app.on("activate", function () {
+      // On macOS it's common to re-create a window in the app when the
+      // dock icon is clicked and there are no other windows open.
+      if (BrowserWindow.getAllWindows().length === 0) createWindow();
+    });
+
+    console.log("Application started successfully");
+  } catch (error) {
+    console.error("Application startup failed:", error);
+    app.quit();
+  }
 });
 
 // Quit when all windows are closed, except on macOS. There, it's common
@@ -74,5 +117,11 @@ app.on("window-all-closed", () => {
   }
 });
 
-// In this file you can include the rest of your app's specific main process
-// code. You can also put them in separate files and require them here.
+// Handle uncaught exceptions
+process.on("uncaughtException", (error) => {
+  console.error("Uncaught exception:", error);
+});
+
+process.on("unhandledRejection", (reason) => {
+  console.error("Unhandled rejection:", reason);
+});
