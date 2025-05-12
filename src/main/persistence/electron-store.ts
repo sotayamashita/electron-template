@@ -28,16 +28,6 @@ export class ElectronPersistenceStore implements PersistenceStore {
 
       // Create the Electron store instance
       this.store = new StoreCtor(this.options);
-
-      // For debugging - log store path
-      try {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const path = (this.store as any).path;
-        console.log(`[ElectronStore] Store initialized at path: ${path}`);
-        console.log(`[ElectronStore] Options:`, JSON.stringify(this.options));
-      } catch (error) {
-        console.error("[ElectronStore] Error logging path:", error);
-      }
     }
   }
 

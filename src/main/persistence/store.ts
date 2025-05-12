@@ -63,8 +63,6 @@ export async function getAppStore(): Promise<TypedStore> {
       theme: "system",
       userLanguage: "en",
     },
-    // Let Electron Store use its default location in all environments
-    // This fixes persistence issues between development and production
   });
 
   instance = new AppStore(electronStore);

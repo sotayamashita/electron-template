@@ -27,7 +27,7 @@ export async function initI18n(): Promise<typeof i18next> {
     ns: ["common", "menu"],
     lng: userLanguage,
     debug: !app.isPackaged,
-    nsSeparator: ":", // 明示的に名前空間セパレーターを設定
+    nsSeparator: ":", // Explicitly set namespace separator
   });
 
   return i18next;

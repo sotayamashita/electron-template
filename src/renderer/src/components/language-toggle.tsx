@@ -20,10 +20,10 @@ export function LanguageToggle(): React.JSX.Element {
   const handleLanguageChange = async (language: string): Promise<void> => {
     if (language === i18n.language) return;
 
-    // ユーザーフィードバックのためにすぐにUIを更新
+    // Update UI immediately for user feedback
     i18n.changeLanguage(language);
 
-    // 直接tRPCを使用して言語設定を永続化
+    // Persist language setting using tRPC
     await trpc.lang.set.mutate(language as "en" | "ja");
   };
 
