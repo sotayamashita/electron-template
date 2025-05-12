@@ -35,7 +35,8 @@ export class ElectronPersistenceStore implements PersistenceStore {
    */
   async get<T>(key: string): Promise<T> {
     await this.ensureInitialized();
-    return this.store.get(key) as T;
+    const store = this.store as { get(key: string): unknown };
+    return store.get(key) as T;
   }
 
   /**
@@ -45,7 +46,8 @@ export class ElectronPersistenceStore implements PersistenceStore {
    */
   async set<T>(key: string, value: T): Promise<void> {
     await this.ensureInitialized();
-    this.store.set(key, value);
+    const store = this.store as { set(key: string, value: unknown): void };
+    store.set(key, value);
   }
 
   /**
@@ -55,7 +57,8 @@ export class ElectronPersistenceStore implements PersistenceStore {
    */
   async has(key: string): Promise<boolean> {
     await this.ensureInitialized();
-    return this.store.has(key);
+    const store = this.store as { has(key: string): boolean };
+    return store.has(key);
   }
 
   /**
@@ -64,6 +67,7 @@ export class ElectronPersistenceStore implements PersistenceStore {
    */
   async delete(key: string): Promise<void> {
     await this.ensureInitialized();
-    this.store.delete(key);
+    const store = this.store as { delete(key: string): void };
+    store.delete(key);
   }
 }

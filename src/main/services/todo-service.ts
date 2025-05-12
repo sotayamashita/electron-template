@@ -1,6 +1,6 @@
 import type { Todo } from "#shared/domain/todo.js";
 import { ValidationError } from "#shared/errors.js";
-import { TodoRepository } from "../repository/todo-repository.js";
+import type { TodoRepository } from "../repository/todo-repository.js";
 
 /**
  * Service for handling Todo business logic

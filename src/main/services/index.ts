@@ -1,3 +1,4 @@
+import type { Theme } from "#shared/domain/theme.js";
 import { container } from "../di/container.js";
 import { ThemeService } from "./theme-service.js";
 import { TodoService } from "./todo-service.js";
@@ -47,5 +48,5 @@ export const themeService = {
   getCurrentTheme: () =>
     getThemeService().then((service) => service.getCurrentTheme()),
   setTheme: (theme: unknown) =>
-    getThemeService().then((service) => service.setTheme(theme as import('#shared/domain/theme').Theme)),
+    getThemeService().then((service) => service.setTheme(theme as Theme)),
 };

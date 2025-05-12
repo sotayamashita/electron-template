@@ -46,20 +46,12 @@ const trpc = createTRPCClient<AppRouter>({
             .catch((err) => {
               // Format error for client-side consumption
               if (err && typeof err === "object" && "code" in err) {
-                // This is our standardized error format from the adapter
-                // Create error with tRPC client error properties
-                const appError = new Error(err.message) as unknown as import('@trpc/client').TRPCClientError<typeof trpc>;
-                appError.name = err.code;
-                // Attach additional properties
-                Object.assign(appError, err);
-                // Add required tRPC client error properties
-                appError.shape = {
-                  message: err.message,
-                  code: err.code,
-                  data: err.data,
-                };
-                appError.data = err.data;
-                observer.error(appError);
+                // tRPC errors require a specific format - we'll need to simulate it
+                // By just passing the raw error data
+                if (process.env.NODE_ENV === "development") {
+                  console.error("[tRPC Client] Error:", err);
+                }
+                observer.error(err);
               } else {
                 // Unexpected error format
                 observer.error(err);

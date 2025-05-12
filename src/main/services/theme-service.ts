@@ -1,7 +1,7 @@
 import type { Theme } from "#shared/domain/theme.js";
 import { ThemeSchema } from "#shared/domain/theme.js";
 import { ValidationError } from "#shared/errors.js";
-import { ThemeRepository } from "../repository/theme-repository.js";
+import type { ThemeRepository } from "../repository/theme-repository.js";
 
 /**
  * Service for handling Theme business logic
