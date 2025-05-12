@@ -3,6 +3,9 @@ import { app, BrowserWindow, shell } from "electron";
 import { fileURLToPath } from "url";
 import icon from "../../resources/icon.png?asset";
 import { container } from "./di/container.js";
+import { getI18n } from "./i18n/index.js";
+import { setupLanguageIpcHandlers } from "./ipc/language-handlers.js";
+import { setupLanguageChangeListeners, updateAppMenu } from "./menu/index.js";
 import { attachTRPC } from "./trpc-ipc-adapter.js";
 import { appRouter } from "./trpc/router.js";
 
@@ -14,7 +17,21 @@ async function initializeApp(): Promise<void> {
     // Ensure container is initialized and dependencies are ready
     await container.getStore();
 
+    // Set up IPC handlers for language
+    setupLanguageIpcHandlers();
+
     console.log("Application services initialized");
+
+    // Initialize i18n
+    await getI18n();
+
+    // Initialize menu with translations
+    await updateAppMenu();
+
+    // Set up language change listeners
+    setupLanguageChangeListeners();
+
+    console.log("i18n and menu initialized");
 
     // Attach tRPC router over a single IPC channel
     attachTRPC("trpc", appRouter);

@@ -1,0 +1,38 @@
+{
+  "app": {
+    "title": "Just AI",
+    "description": "AIの機能を備えたシンプルなElectronアプリ"
+  },
+  "todo": {
+    "title": "タスクリスト",
+    "description": "tRPCでタスクを管理する",
+    "add": "タスクを追加",
+    "placeholder": "新しいタスクを入力",
+    "empty": "タスクはまだありません。タスクを追加してください。",
+    "empty_count": "タスクはまだありません",
+    "complete": "完了",
+    "delete": "削除",
+    "task_count": "{{count}}件のタスク",
+    "task_count_plural": "合計{{count}}件のタスク"
+  },
+  "theme": {
+    "title": "テーマ",
+    "light": "ライト",
+    "dark": "ダーク",
+    "system": "システム"
+  },
+  "language": {
+    "title": "言語",
+    "en": "英語",
+    "ja": "日本語"
+  },
+  "common": {
+    "save": "保存",
+    "cancel": "キャンセル",
+    "close": "閉じる",
+    "settings": "設定",
+    "about": "概要",
+    "documentation": "ドキュメント",
+    "send_ipc": "IPCを送信"
+  }
+}

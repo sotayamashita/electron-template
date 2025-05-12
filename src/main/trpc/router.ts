@@ -1,4 +1,5 @@
 import { publicProcedure, router } from "./core.js";
+import { languageRouter } from "./routers/language.js";
 import { themeRouter } from "./routers/theme.js";
 import { todoRouter } from "./routers/todo.js";
 
@@ -17,6 +18,9 @@ export const appRouter = router({
 
   /** Theme domain procedures */
   theme: themeRouter,
+
+  /** Language domain procedures */
+  lang: languageRouter,
 });
 
 /** Export router type for the renderer (type‑only import) */

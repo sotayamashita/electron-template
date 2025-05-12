@@ -15,6 +15,7 @@ export class ElectronPersistenceStore implements PersistenceStore {
     private options: {
       name: string;
       defaults?: Record<string, unknown>;
+      cwd?: string;
     },
   ) {}
 
@@ -24,6 +25,8 @@ export class ElectronPersistenceStore implements PersistenceStore {
   private async ensureInitialized(): Promise<void> {
     if (!this.store) {
       const { default: StoreCtor } = await import("electron-store");
+
+      // Create the Electron store instance
       this.store = new StoreCtor(this.options);
     }
   }
