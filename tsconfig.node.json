@@ -16,6 +16,11 @@
     // `TS2307: Cannot find module '@tailwindcss/vite'`.
     "moduleResolution": "NodeNext",
     "verbatimModuleSyntax": true,
+    "baseUrl": ".",
+    "paths": {
+      "#shared/*": ["src/shared/*"],  /* Universal shared layer (private/internal) */
+      "@main/*": ["src/main/*"]       /* Main process code (public module) */
+    },
     "types": ["electron-vite/node"]
   }
 }

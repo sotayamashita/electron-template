@@ -1,41 +1,83 @@
 import { electronAPI } from "@electron-toolkit/preload";
 import { contextBridge, ipcRenderer } from "electron";
 
+import type { IPCOperation } from "@main/trpc-ipc-adapter.js";
+import type { AppRouter } from "@main/trpc/router.js";
 import { createTRPCClient } from "@trpc/client";
 import { observable } from "@trpc/server/observable";
-import type { AppRouter } from "../shared/trpc.js";
 
-// Custom APIs for renderer
-// tRPC client (custom IPC link)
+/**
+ * Generate a unique request ID for tracing
+ */
+const generateRequestId = (): string => {
+  return Date.now().toString(36) + Math.random().toString(36).substring(2, 7);
+};
+
+/**
+ * Create a tRPC client with enhanced error handling and tracing
+ */
 const trpc = createTRPCClient<AppRouter>({
   links: [
     () =>
-      ({ op }) =>
-        observable((observer) => {
+      ({ op }) => {
+        // Add request ID for tracing in development
+        const requestId =
+          process.env.NODE_ENV === "development"
+            ? generateRequestId()
+            : undefined;
+
+        const enhancedOp: IPCOperation = {
+          ...op,
+          requestId,
+        };
+
+        return observable((observer) => {
+          // Optional logging in dev mode
+          if (process.env.NODE_ENV === "development") {
+            console.log(`[tRPC:${requestId}] Client calling ${op.path}`);
+          }
+
           ipcRenderer
-            .invoke("trpc", op)
+            .invoke("trpc", enhancedOp)
             .then((data) => {
               observer.next({ result: { data, type: "data" } });
               observer.complete();
             })
-            .catch((err) => observer.error(err));
+            .catch((err) => {
+              // Format error for client-side consumption
+              if (err && typeof err === "object" && "code" in err) {
+                // tRPC errors require a specific format - we'll need to simulate it
+                // By just passing the raw error data
+                if (process.env.NODE_ENV === "development") {
+                  console.error("[tRPC Client] Error:", err);
+                }
+                observer.error(err);
+              } else {
+                // Unexpected error format
+                observer.error(err);
+              }
+            });
+
+          // Return empty cleanup function
           return () => {};
-        }),
+        });
+      },
   ],
 });
 
-const api = {};
+// Setup application API
+const api = {
+  // Add application-specific API methods here
+};
 
-// Use `contextBridge` APIs to expose Electron APIs to
-// renderer only if context isolation is enabled, otherwise
-// just add to the DOM global.
+// Expose APIs to renderer via contextBridge
 if (process.contextIsolated) {
   try {
     contextBridge.exposeInMainWorld("electron", electronAPI);
     contextBridge.exposeInMainWorld("api", api);
     contextBridge.exposeInMainWorld("trpc", trpc);
   } catch (error) {
-    console.error(error);
+    console.error("Failed to expose APIs to renderer:", error);
   }
 } else {
   // @ts-ignore (define in dts)

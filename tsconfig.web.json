@@ -2,18 +2,23 @@
   "extends": "@electron-toolkit/tsconfig/tsconfig.web.json",
   "include": [
     "src/renderer/src/env.d.ts",
-    "src/renderer/src/**/*",
-    "src/renderer/src/**/*.tsx",
-    "src/preload/*.d.ts",
-    "src/shared/**/*"
+    "src/renderer/src/**/*",     /* Includes all renderer files including .tsx */
+    "src/preload/*.d.ts",        /* Preload type definitions */
+    "src/shared/**/*",           /* Universal shared code */
+    "src/main/trpc/router.ts"    /* Only need router type, not implementation */
   ],
   "compilerOptions": {
     "composite": true,
     "jsx": "react-jsx",
     "baseUrl": ".",
     "paths": {
+      /* Renderer-specific aliases */
       "@/*": ["src/renderer/src/*"],
-      "@renderer/*": ["src/renderer/src/*"]
+      "@renderer/*": ["src/renderer/src/*"],
+      
+      /* Universal aliases (must match electron.vite.config.ts) */
+      "#shared/*": ["src/shared/*"],   /* Universal shared layer (private/internal) */
+      "@main/*": ["src/main/*"]        /* Main process code (public module, types only) */
     }
   }
 }
