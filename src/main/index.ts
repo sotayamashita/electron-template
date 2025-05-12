@@ -55,8 +55,18 @@ function createWindow(): BrowserWindow {
     autoHideMenuBar: true,
     ...(process.platform === "linux" ? { icon } : {}),
     webPreferences: {
-      preload: fileURLToPath(new URL("../preload/index.mjs", import.meta.url)),
+      // Disable direct use of Node.js APIs in renderer process
+      nodeIntegration: false,
+      // Isolate context between renderer process and preload script
+      contextIsolation: true,
+      // Disable sandboxing for renderer process
       sandbox: false,
+      // Load the preload script
+      preload: fileURLToPath(new URL("../preload/index.mjs", import.meta.url)),
+      // Enable web security
+      webSecurity: true,
+      // Allow loading local resources
+      allowRunningInsecureContent: false,
     },
   });
 
