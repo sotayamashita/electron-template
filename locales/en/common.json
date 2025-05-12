@@ -1,0 +1,38 @@
+{
+  "app": {
+    "title": "Just AI",
+    "description": "A simple Electron app with AI capabilities"
+  },
+  "todo": {
+    "title": "Todo List",
+    "description": "Manage your tasks with tRPC",
+    "add": "Add Task",
+    "placeholder": "Enter a new task",
+    "empty": "No tasks yet. Add one to get started.",
+    "empty_count": "No tasks yet",
+    "complete": "Complete",
+    "delete": "Delete",
+    "task_count": "{{count}} task",
+    "task_count_plural": "{{count}} tasks total"
+  },
+  "theme": {
+    "title": "Theme",
+    "light": "Light",
+    "dark": "Dark",
+    "system": "System"
+  },
+  "language": {
+    "title": "Language",
+    "en": "English",
+    "ja": "Japanese"
+  },
+  "common": {
+    "save": "Save",
+    "cancel": "Cancel",
+    "close": "Close",
+    "settings": "Settings",
+    "about": "About",
+    "documentation": "Documentation",
+    "send_ipc": "Send IPC"
+  }
+}

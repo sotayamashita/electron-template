@@ -5,6 +5,7 @@
 
 import type { TypedStore } from "../persistence/store.js";
 import { getAppStore } from "../persistence/store.js";
+import { LanguageRepository } from "../repository/language-repository.js";
 import { ThemeRepository } from "../repository/theme-repository.js";
 import { TodoRepository } from "../repository/todo-repository.js";
 
@@ -16,6 +17,7 @@ class DIContainer {
   private store: TypedStore | undefined;
   private todoRepository: TodoRepository | undefined;
   private themeRepository: ThemeRepository | undefined;
+  private languageRepository: LanguageRepository | undefined;
 
   /**
    * Ensure container is initialized
@@ -29,6 +31,7 @@ class DIContainer {
     // Initialize repositories
     this.todoRepository = new TodoRepository(this.store);
     this.themeRepository = new ThemeRepository(this.store);
+    this.languageRepository = new LanguageRepository(this.store);
 
     this.initialized = true;
   }
@@ -55,6 +58,14 @@ class DIContainer {
   async getThemeRepository(): Promise<ThemeRepository> {
     await this.ensureInitialized();
     return this.themeRepository!;
+  }
+
+  /**
+   * Get the Language repository
+   */
+  async getLanguageRepository(): Promise<LanguageRepository> {
+    await this.ensureInitialized();
+    return this.languageRepository!;
   }
 }
 

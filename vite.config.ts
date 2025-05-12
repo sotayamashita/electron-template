@@ -84,6 +84,7 @@ export default defineConfig({
         "@main": resolve("src/main"), // Main process code (public module, types only)
       },
     },
+    publicDir: resolve("locales"), // Make locales available to the renderer
     build: {
       rollupOptions: {
         /**

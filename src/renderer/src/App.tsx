@@ -1,4 +1,5 @@
 import type { Todo } from "#shared/domain/todo";
+import { LanguageToggle } from "@/components/language-toggle";
 import { ModeToggle } from "@/components/mode-toggle";
 import { Button } from "@/components/ui/button";
 import {
@@ -22,6 +23,7 @@ import {
   IconTrash,
 } from "@tabler/icons-react";
 import { useCallback, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 function Versions(): React.JSX.Element {
   const [versions] = useState(window.electron.process.versions);
@@ -44,6 +46,7 @@ function Versions(): React.JSX.Element {
 }
 
 function App(): React.JSX.Element {
+  const { t } = useTranslation();
   const [tasks, setTasks] = useState<Todo[]>([]);
   const [newTitle, setNewTitle] = useState("");
   const pingHandle = async (): Promise<void> => {
@@ -96,7 +99,8 @@ function App(): React.JSX.Element {
       {/* Header */}
       <header className="bg-background/80 sticky top-0 z-10 border-b backdrop-blur-sm">
         <div className="flex h-16 items-center justify-between px-4">
-          <div className="ml-auto">
+          <div className="ml-auto flex items-center gap-2">
+            <LanguageToggle />
             <ModeToggle />
           </div>
         </div>
@@ -106,15 +110,15 @@ function App(): React.JSX.Element {
       <main className="container mx-auto flex-1 px-4 py-8">
         <Tabs defaultValue="about" className="w-full">
           <TabsList className="mb-6 w-full justify-start">
-            <TabsTrigger value="about">About</TabsTrigger>
-            <TabsTrigger value="todos">Todos</TabsTrigger>
+            <TabsTrigger value="about">{t("common.about")}</TabsTrigger>
+            <TabsTrigger value="todos">{t("todo.title")}</TabsTrigger>
           </TabsList>
 
           <TabsContent value="todos" className="space-y-6">
             <Card>
               <CardHeader>
-                <CardTitle>Todos</CardTitle>
-                <CardDescription>Manage your tasks with tRPC</CardDescription>
+                <CardTitle>{t("todo.title")}</CardTitle>
+                <CardDescription>{t("todo.description")}</CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="flex gap-2">
@@ -122,7 +126,7 @@ function App(): React.JSX.Element {
                     type="text"
                     value={newTitle}
                     onChange={(e) => setNewTitle(e.target.value)}
-                    placeholder="New task title"
+                    placeholder={t("todo.placeholder")}
                     onKeyDown={(e) => e.key === "Enter" && handleAdd()}
                     className="flex-1"
                   />
@@ -131,7 +135,7 @@ function App(): React.JSX.Element {
                     onClick={handleAdd}
                     className="cursor-pointer"
                   >
-                    <IconPlus /> Add
+                    <IconPlus /> {t("todo.add")}
                   </Button>
                 </div>
 
@@ -165,7 +169,7 @@ function App(): React.JSX.Element {
                             className="text-muted-foreground hover:text-destructive h-8 w-8 cursor-pointer"
                           >
                             <IconTrash className="h-4 w-4" />
-                            <span className="sr-only">Delete</span>
+                            <span className="sr-only">{t("todo.delete")}</span>
                           </Button>
                         </div>
                       </div>
@@ -174,13 +178,13 @@ function App(): React.JSX.Element {
                 ) : (
                   <div className="bg-muted rounded-md p-4 text-center">
                     <p className="text-muted-foreground text-sm">
-                      No tasks yet. Add one to get started.
+                      {t("todo.empty")}
                     </p>
                   </div>
                 )}
               </CardContent>
               <CardFooter className="text-muted-foreground text-xs">
-                {tasks.length} {tasks.length === 1 ? "task" : "tasks"} total
+                {t("todo.task_count", { count: tasks.length })}
               </CardFooter>
             </Card>
           </TabsContent>
@@ -188,10 +192,8 @@ function App(): React.JSX.Element {
           <TabsContent value="about" className="space-y-6">
             <Card>
               <CardHeader>
-                <CardTitle>About</CardTitle>
-                <CardDescription>
-                  Information about this application
-                </CardDescription>
+                <CardTitle>{t("common.about")}</CardTitle>
+                <CardDescription>{t("app.description")}</CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="flex items-center gap-3 py-2">
@@ -238,7 +240,7 @@ function App(): React.JSX.Element {
                     target="_blank"
                     rel="noreferrer"
                   >
-                    Documentation
+                    {t("common.documentation")}
                   </a>
                 </Button>
 
@@ -247,7 +249,7 @@ function App(): React.JSX.Element {
                   onClick={pingHandle}
                   className="flex-1 justify-center"
                 >
-                  Send IPC
+                  {t("common.send_ipc")}
                 </Button>
               </CardFooter>
             </Card>

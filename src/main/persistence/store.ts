@@ -1,3 +1,4 @@
+import type { Language } from "#shared/domain/language.js";
 import type { Theme } from "#shared/domain/theme.js";
 import type { Todo } from "#shared/domain/todo.js";
 import { ElectronPersistenceStore } from "./electron-store.js";
@@ -10,6 +11,7 @@ import type { PersistenceStore } from "./store-interface.js";
 export type StoreSchema = {
   todos: Todo[];
   theme: Theme;
+  userLanguage: Language;
 };
 
 /** Typed Store interface that knows about our schema */
@@ -56,7 +58,13 @@ export async function getAppStore(): Promise<TypedStore> {
 
   const electronStore = new ElectronPersistenceStore({
     name: "settings",
-    defaults: { todos: [], theme: "system" },
+    defaults: {
+      todos: [],
+      theme: "system",
+      userLanguage: "en",
+    },
+    // Let Electron Store use its default location in all environments
+    // This fixes persistence issues between development and production
   });
 
   instance = new AppStore(electronStore);

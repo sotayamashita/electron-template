@@ -9,3 +9,10 @@ export type ThemeOption = (typeof THEME_OPTIONS)[number];
 
 /** Default theme */
 export const DEFAULT_THEME: ThemeOption = "system";
+
+/** Available language options in UI */
+export const LANGUAGE_OPTIONS = ["en", "ja"] as const;
+export type LanguageOption = (typeof LANGUAGE_OPTIONS)[number];
+
+/** Default language */
+export const DEFAULT_LANGUAGE: LanguageOption = "en";
