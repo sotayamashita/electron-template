@@ -1,3 +1,9 @@
+---
+title: Renovate 設定ガイド
+lastUpdated: 2025-05-13
+tags: [renovate, github, dependency-management, automation]
+---
+
 # Renovate 設定ガイド
 
 > **注意**: このドキュメントは作成時点（2025年5月）の情報に基づいています。Renovate や GitHub の仕様変更により内容が古くなる可能性があります。定期的に最新情報を確認してください。最新情報の確認には、このドキュメント末尾の「ドキュメントの更新方法」セクションを参照してください。

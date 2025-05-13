@@ -1,8 +1,6 @@
 ---
 title: Electron ドキュメントマップ
-version: 0.2.0
 lastUpdated: 2025-05-08
-minElectron: 28
 tags: [electron, ai-ready, overview, docs]
 ---
 

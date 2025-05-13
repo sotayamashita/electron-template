@@ -1,8 +1,6 @@
 ---
 title: Electronプロセス間連携と設定管理
-version: 0.1.0
 lastUpdated: 2025-05-07
-minElectron: 20 # contextIsolation:true, sandbox:true by default
 tags:
   [electron, ai-ready, ipc, config, preload, contextBridge, settings, security]
 ---

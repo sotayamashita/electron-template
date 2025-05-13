@@ -1,3 +1,9 @@
+---
+title: "ADR‑0002: tRPC over IPC – Type-safe Communication with Custom Adapter"
+lastUpdated: 2025-05-07
+tags: [adr, trpc, ipc, electron, type-safety]
+---
+
 # ADR‑0002: tRPC over IPC – Type-safe Communication with Custom Adapter
 
 | Status | Accepted   |

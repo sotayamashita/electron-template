@@ -1,3 +1,9 @@
+---
+title: "ADR‑0003: Persistence – Repository Pattern with electron-store"
+lastUpdated: 2025-05-09
+tags: [adr, persistence, repository-pattern, electron-store]
+---
+
 # ADR‑0003: Persistence – Repository Pattern with electron-store
 
 | Status | Accepted   |

@@ -1,8 +1,6 @@
 ---
 title: Electronデータ永続化戦略
-version: 0.2.0
 lastUpdated: 2025-05-07
-minElectron: 28
 tags: [electron, ai-ready, storage, persistence, database, config]
 ---
 
