@@ -11,9 +11,7 @@
 ```json
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": [
-    "config:recommended"
-  ],
+  "extends": ["config:recommended"],
   "packageRules": [
     {
       "matchDepTypes": ["devDependencies"],
@@ -24,6 +22,7 @@
 ```
 
 この設定により：
+
 - `config:recommended` の推奨設定をベースに使用
 - `devDependencies` に分類されるパッケージの更新PRは自動的にマージされる
 
@@ -52,7 +51,7 @@ Renovate の自動マージ機能を有効にするには、GitHub リポジト�
 
 ```json
 {
-  "assignAutomerge": true,  // 自動マージPRにもレビュアーとアサイニーを割り当てる
+  "assignAutomerge": true, // 自動マージPRにもレビュアーとアサイニーを割り当てる
   "schedule": ["every weekend"], // 更新を週末のみに制限
   "labels": ["dependencies", "renovate"], // PRに特定のラベルを付与
   "prHourlyLimit": 5 // 1時間あたりのPR作成数を制限
@@ -76,10 +75,12 @@ Renovate の自動マージ機能を有効にするには、GitHub リポジト�
 このドキュメントの情報が古くなった場合は、以下の手順で最新情報を確認し更新してください：
 
 1. **公式ドキュメントの確認**
+
    - [Renovate 公式ドキュメント](https://docs.renovatebot.com/)（特に[Automerge設定ガイド](https://docs.renovatebot.com/key-concepts/automerge/)）
    - [GitHub ブランチ保護ルール公式ドキュメント](https://docs.github.com/ja/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches/about-protected-branches)
 
 2. **最新情報の検索**
+
    - OpenAI o3 with search ツールで以下のようなプロンプトを使用：
      ```
      「Renovate 自動マージ GitHub ブランチ保護ルール 最新設定 2025」
@@ -87,6 +88,7 @@ Renovate の自動マージ機能を有効にするには、GitHub リポジト�
      ```
 
 3. **実環境での検証**
+
    - 可能であれば、テストリポジトリで実際に設定を適用して動作確認
    - 本番リポジトリに適用する前に、小規模な変更で検証
 
