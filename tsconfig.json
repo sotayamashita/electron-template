@@ -1,4 +1,16 @@
 {
   "files": [],
-  "references": [{ "path": "./tsconfig.node.json" }, { "path": "./tsconfig.web.json" }]
+  "references": [{ "path": "./tsconfig.node.json" }, { "path": "./tsconfig.web.json" }],
+  // NOTE:
+  // These compilerOptions were added to satisfy the shadcn/ui CLI and other tools
+  // that look for an `@/*` path alias in the *root* tsconfig.json.  Setting
+  // `"baseUrl": "."` activates path mapping, and the `@/*` alias points to the
+  // renderer source so imports like `@/components/button` resolve correctly in
+  // both the IDE and the Vite build.
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/renderer/src/*"]
+    }
+  }
 }

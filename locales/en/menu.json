@@ -1,0 +1,44 @@
+{
+  "menu": {
+    "app": {
+      "about": "About Just AI",
+      "preferences": "Preferences",
+      "quit": "Quit Just AI"
+    },
+    "file": {
+      "title": "File",
+      "new": "New",
+      "open": "Open",
+      "save": "Save",
+      "saveAs": "Save As"
+    },
+    "edit": {
+      "title": "Edit",
+      "undo": "Undo",
+      "redo": "Redo",
+      "cut": "Cut",
+      "copy": "Copy",
+      "paste": "Paste",
+      "delete": "Delete",
+      "selectAll": "Select All"
+    },
+    "view": {
+      "title": "View",
+      "reload": "Reload",
+      "toggleDevTools": "Toggle Developer Tools",
+      "toggleFullScreen": "Toggle Full Screen"
+    },
+    "window": {
+      "title": "Window",
+      "minimize": "Minimize",
+      "zoom": "Zoom",
+      "close": "Close"
+    },
+    "help": {
+      "title": "Help",
+      "documentation": "Documentation",
+      "reportIssue": "Report Issue",
+      "about": "About"
+    }
+  }
+}

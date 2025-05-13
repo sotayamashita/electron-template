@@ -1,11 +1,18 @@
-import './assets/main.css'
+import { ThemeProvider } from "@/components/theme-provider";
+import { StrictMode } from "react";
+import { createRoot } from "react-dom/client";
+import App from "./App";
+import "./assets/main.css";
+import "./lib/i18n"; // Initialize i18n before React renders
+import { setupLanguageChangeHandler } from "./lib/i18n";
 
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
-import App from './App'
+// Set up language change handler after React initializes
+setupLanguageChangeHandler();
 
-createRoot(document.getElementById('root')!).render(
+createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <App />
-  </StrictMode>
-)
+    <ThemeProvider>
+      <App />
+    </ThemeProvider>
+  </StrictMode>,
+);

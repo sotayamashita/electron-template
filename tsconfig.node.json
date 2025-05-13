@@ -1,8 +1,26 @@
 {
   "extends": "@electron-toolkit/tsconfig/tsconfig.node.json",
-  "include": ["electron.vite.config.*", "src/main/**/*", "src/preload/**/*"],
+  "include": [
+    "electron.vite.config.*", 
+    "src/main/**/*", 
+    "src/preload/**/*", 
+    "src/shared/**/*"
+  ],
   "compilerOptions": {
     "composite": true,
+    "module": "NodeNext",
+    "target": "ES2022",
+    // "@tailwindcss/vite" ships its typings as ESM-flavoured `*.d.mts` files.  
+    // TypeScript can only resolve those when `moduleResolution` is set to
+    // "bundler" (or "nodenext"/"node16"). Without it you get
+    // `TS2307: Cannot find module '@tailwindcss/vite'`.
+    "moduleResolution": "NodeNext",
+    "verbatimModuleSyntax": true,
+    "baseUrl": ".",
+    "paths": {
+      "#shared/*": ["src/shared/*"],  /* Universal shared layer (private/internal) */
+      "@main/*": ["src/main/*"]       /* Main process code (public module) */
+    },
     "types": ["electron-vite/node"]
   }
 }
