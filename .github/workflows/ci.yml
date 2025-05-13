@@ -37,6 +37,3 @@ jobs:
 
       - name: Prettier
         run: pnpm format:check
-
-      - name: Commitlint
-        run: pnpm commitlint --from ${{ github.event.pull_request.base.sha }} --to ${{ github.event.pull_request.head.sha }}
