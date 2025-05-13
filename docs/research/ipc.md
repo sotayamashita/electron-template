@@ -1,8 +1,6 @@
 ---
 title: ElectronIPC型安全実装ガイド
-version: 0.1.0
 lastUpdated: 2025-05-08
-minElectron: 28
 tags: [electron, ai-ready, ipc, typesafe, trpc]
 ---
 

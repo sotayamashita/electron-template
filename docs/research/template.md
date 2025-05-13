@@ -1,9 +1,7 @@
 ---
 title: (ドキュメントタイトル)
-version: 0.1.0
-lastUpdated: 2025-05-07
-minElectron: (例: 30)
-tags: [electron, ai-ready, storage]
+lastUpdated: YYYY-MM-DD
+tags: [electron, 関連タグ1, 関連タグ2]
 ---
 
 ## 0. ドキュメントスタイルガイド（必読）
@@ -81,9 +79,10 @@ project-root/
 │   └── shared/             # 共通型・ユーティリティ
 ├── locales/                # i18n ファイル
 ├── docs/                   # ドキュメント
-│   ├── 01_this_document.md
-│   ├── glossary.md
-│   └── ...
+│   ├── adr/                # アーキテクチャ決定記録
+│   ├── research/           # 技術調査ドキュメント
+│   ├── guides/             # 開発ガイド
+│   └── README.md           # ドキュメント概要
 └── package.json
 ```
 
@@ -147,5 +146,7 @@ sequenceDiagram
 
 ## 7. ドキュメント間の参照方法
 
-- 同一リポジトリ内リンク: `@/docs/storage.md`
-- セクション指定: `@/docs/config.md#5-状態の永続化`
+- 同一リポジトリ内リンク: `@docs/research/storage.md`
+- セクション指定: `@docs/research/config.md#5-状態の永続化`
+- コード参照: `@src/main/index.ts:42`
+- ADR参照: `@docs/adr/0002-trpc-over-ipc.md`

@@ -1,3 +1,9 @@
+---
+title: "ADR-0006: Refactoring to Service Layer and Dependency Injection"
+lastUpdated: 2025-05-11
+tags: [adr, architecture, service-layer, dependency-injection, repository]
+---
+
 # ADR-0006: Refactoring to Service Layer and Dependency Injection
 
 | Status  | Proposed   |

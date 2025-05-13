@@ -1,3 +1,19 @@
+---
+title: Dev Workflow Tools
+lastUpdated: 2025-05-13
+tags:
+  [
+    development,
+    workflow,
+    husky,
+    lint-staged,
+    prettier,
+    eslint,
+    commitizen,
+    commitlint,
+  ]
+---
+
 # Dev Workflow Tools
 
 > **Version Compatibility**
@@ -8,7 +24,7 @@
 
 ## Purpose
 
-This document explains how **husky**, **lint‑staged**, **Prettier**, **ESLint**, **Commitizen**, and **Commitlint** are integrated into the commit workflow so developers can keep clean code and correct commit messages **without breaking their flow**. These tools ensure code quality and consistency across the project, including when working with Electron multi-process architecture as described in @/docs/shared-config.md.
+This document explains how **husky**, **lint‑staged**, **Prettier**, **ESLint**, **Commitizen**, and **Commitlint** are integrated into the commit workflow so developers can keep clean code and correct commit messages **without breaking their flow**. These tools ensure code quality and consistency across the project, including when working with Electron multi-process architecture as described in @docs/research/config.md.
 
 ### Why do we need them?
 
@@ -43,7 +59,7 @@ flowchart TD
 
 ### Pre‑commit Hooks (husky + lint‑staged)
 
-Husky's **`pre-commit`** hook calls `lint‑staged`, which runs **Prettier → ESLint** in that order on staged files only. The hook is automatically set up via the `prepare` script during `pnpm install`. This ensures each commit maintains consistent code quality, especially important when working with Electron's multi-process architecture described in @/docs/shared-config.md.
+Husky's **`pre-commit`** hook calls `lint‑staged`, which runs **Prettier → ESLint** in that order on staged files only. The hook is automatically set up via the `prepare` script during `pnpm install`. This ensures each commit maintains consistent code quality, especially important when working with Electron's multi-process architecture described in @docs/research/config.md.
 
 ### Commit Convention (Commitizen + Commitlint)
 
@@ -53,8 +69,8 @@ Developers run `git cz` or `pnpm commit` to create a Conventional Commits messag
 
 Running `pnpm format` or `pnpm lint` applies Prettier and ESLint to **all** files. These commands are also useful for:
 
-- Ensuring consistent TypeScript configuration across main and renderer processes as per @/docs/shared-config.md
-- Maintaining internationalization strings and structure according to @/docs/i18n.md
+- Ensuring consistent TypeScript configuration across main and renderer processes as per @docs/research/config.md
+- Maintaining internationalization strings and structure according to @docs/research/i18n.md
 
 ## Workflow steps (summary)
 
@@ -67,10 +83,11 @@ Running `pnpm format` or `pnpm lint` applies Prettier and ESLint to **all** file
 
 - **Git hooks are not running** — Check `git config --get core.hooksPath` and verify that it points to the `.husky` directory.
 - **`git cz` fails with `ENOENT`** — Use `pnpm commit` or set an alias: `git config --add alias.cz "!pnpm commit"`.
-- **ESLint errors in Electron code** — Refer to @/docs/shared-config.md for best practices regarding Electron multi-process architecture.
-- **i18n related formatting issues** — Check @/docs/i18n.md for proper internationalization patterns.
+- **ESLint errors in Electron code** — Refer to @docs/research/config.md for best practices regarding Electron multi-process architecture.
+- **i18n related formatting issues** — Check @docs/research/i18n.md for proper internationalization patterns.
 
 ## Related Documents
 
-- @/docs/shared-config.md - Electron process communication and configuration management
-- @/docs/i18n.md - Internationalization implementation details
+- @docs/research/config.md - Electron process communication and configuration management
+- @docs/research/i18n.md - Internationalization implementation details
+- @docs/adr/ - アーキテクチャ決定記録（ADR）

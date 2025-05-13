@@ -1,3 +1,9 @@
+---
+title: "ADR-0005: Split Router into `main/` and Establish Universal Shared Layer"
+lastUpdated: 2025-05-11
+tags: [adr, architecture, trpc, typescript, shared-layer]
+---
+
 # ADR-0005: Split Router into `main/` and Establish Universal Shared Layer
 
 | Status     | Accepted   |
@@ -95,7 +101,7 @@ As the application grows, more routers and shared constants will be added. We ne
 
 ## Consequences
 
-- **Correct runtime isolation** – the renderer bundle no longer contains `@trpc/server`; bundle size reduced by ~33 %.
+- **Correct runtime isolation** – the renderer bundle no longer contains `@trpc/server`; bundle size reduced by ~33 %.
 - **Explicit import boundaries** – accidental value imports of Node‑only code fail compilation or linting.
 - **Scalable structure** – new domains add only a schema file in `shared/domain` and a procedure in `main/trpc/router.ts`.
 - **Documentation clarity** – ADR‑0002 is superseded; newcomers read ADR‑0005 for the latest structure.
@@ -106,7 +112,7 @@ As the application grows, more routers and shared constants will be added. We ne
 | ------------------------------------------------------ | ------------------------------------------------------------ |
 | Amend ADR‑0002 in place                                | Loses change history; harder to audit the shift in approach. |
 | Keep router in `shared/` but tree‑shake `@trpc/server` | Relies on bundler heuristics and fragile configuration.      |
-| Adopt community package `electron‑trpc`                | Lacks maintenance, not yet compatible with tRPC v11.         |
+| Adopt community package `electron‑trpc`                | Lacks maintenance, not yet compatible with tRPC v11.         |
 
 ## Implementation Guide
 

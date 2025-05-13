@@ -1,4 +1,10 @@
-# ADR‑0004: Electron i18n – Language Persistence & Menu Localization
+---
+title: "ADR‑0004: Electron i18n – Language Persistence & Menu Localization"
+lastUpdated: 2025-05-11
+tags: [adr, i18n, internationalization, electron, localization, menu]
+---
+
+# ADR‑0004: Electron i18n – Language Persistence & Menu Localization
 
 | Status | Accepted   |
 | ------ | ---------- |
@@ -6,9 +12,9 @@
 
 ## Context
 
-Our Electron + React desktop application must support multiple languages in **both** the renderer UI and the native application menu. Key requirements:
+Our Electron + React desktop application must support multiple languages in **both** the renderer UI and the native application menu. Key requirements:
 
-- Persist the user’s chosen language across restarts.
+- Persist the user's chosen language across restarts.
 - No first‑paint flicker; the correct language must be visible from the very first frame.
 - Enable live language switching at runtime.
 - Preserve our security posture (`contextIsolation: true`, `nodeIntegration: false`).
@@ -24,7 +30,7 @@ Our Electron + React desktop application must support multiple languages in **
 2. **i18n libraries**
 
    - **Main process**: `i18next` + `i18next‑fs‑backend` to read JSON resources from `locales/{lng}/{ns}.json`.
-   - **Renderer**: `i18next` + `react‑i18next`; translations are bundled at build‑time using `import.meta.glob("/locales/**.json", { eager: true })`.
+   - **Renderer**: `i18next` + `react‑i18next`; translations are bundled at build‑time using `import.meta.glob("/locales/**.json", { eager: true })`.
 
 3. **Initial language bootstrap**
 
