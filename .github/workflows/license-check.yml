@@ -1,4 +1,4 @@
-name: CI
+name: License Compliance Check
 
 on:
   push:
@@ -8,9 +8,8 @@ on:
   workflow_dispatch:
 
 jobs:
-  quality:
+  license-check:
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v4
         with:
@@ -28,11 +27,5 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: ESLint
-        run: pnpm lint:check
-
-      - name: Typecheck
-        run: pnpm typecheck
-
-      - name: Prettier
-        run: pnpm format:check
+      - name: Check licenses
+        run: pnpm run license:check

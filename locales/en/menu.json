@@ -38,7 +38,8 @@
       "title": "Help",
       "documentation": "Documentation",
       "reportIssue": "Report Issue",
-      "about": "About"
+      "about": "About",
+      "licenses": "Licenses"
     }
   }
 }

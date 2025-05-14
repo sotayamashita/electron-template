@@ -38,7 +38,8 @@
       "title": "ヘルプ",
       "documentation": "ドキュメント",
       "reportIssue": "問題を報告",
-      "about": "バージョン情報"
+      "about": "バージョン情報",
+      "licenses": "ライセンス"
     }
   }
 }

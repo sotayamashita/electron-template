@@ -4,3 +4,7 @@ out
 .DS_Store
 .eslintcache
 *.log*
+
+# license-checker-rseidelsohn output
+resources/licenses.json
+resources/licenses.html

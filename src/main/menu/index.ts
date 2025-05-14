@@ -118,6 +118,32 @@ function createAppMenu(t: TFunction): Menu {
             );
           },
         },
+        { type: "separator" as const },
+        {
+          label: t("menu:menu.help.licenses", "Licenses"),
+          click: async () => {
+            const { BrowserWindow } = await import("electron");
+            const { join } = await import("path");
+
+            const win = new BrowserWindow({
+              title: "Third-Party Software Licenses",
+              width: 700,
+              height: 500,
+              webPreferences: {
+                nodeIntegration: false,
+                contextIsolation: true,
+                webSecurity: true,
+              },
+            });
+
+            // Determine the correct path based on whether app is packaged
+            const licensePath = app.isPackaged
+              ? join(process.resourcesPath, "licenses.html")
+              : join(app.getAppPath(), "resources/licenses.html");
+
+            win.loadFile(licensePath);
+          },
+        },
       ],
     },
   ];
