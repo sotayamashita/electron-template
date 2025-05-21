@@ -8,6 +8,8 @@ import { getAppStore } from "../persistence/store.js";
 import { LanguageRepository } from "../repository/language-repository.js";
 import { ThemeRepository } from "../repository/theme-repository.js";
 import { TodoRepository } from "../repository/todo-repository.js";
+import { notificationServiceInstance, NotificationService } from "../services/notification-service.js"; // Added
+import { TodoService } from "../services/todo-service.js"; // Added
 
 /**
  * Lazy-loaded singleton container for application dependencies
@@ -18,6 +20,8 @@ class DIContainer {
   private todoRepository: TodoRepository | undefined;
   private themeRepository: ThemeRepository | undefined;
   private languageRepository: LanguageRepository | undefined;
+  private notificationService: NotificationService | undefined; // Added
+  private todoService: TodoService | undefined; // Added
 
   /**
    * Ensure container is initialized
@@ -32,6 +36,10 @@ class DIContainer {
     this.todoRepository = new TodoRepository(this.store);
     this.themeRepository = new ThemeRepository(this.store);
     this.languageRepository = new LanguageRepository(this.store);
+
+    // Initialize services
+    this.notificationService = notificationServiceInstance; // Added
+    this.todoService = new TodoService(this.todoRepository, this.notificationService); // Added
 
     this.initialized = true;
   }
@@ -67,6 +75,22 @@ class DIContainer {
     await this.ensureInitialized();
     return this.languageRepository!;
   }
+
+  /**
+   * Get the Notification service
+   */
+  async getNotificationService(): Promise<NotificationService> { // Added
+    await this.ensureInitialized(); // Added
+    return this.notificationService!; // Added
+  } // Added
+
+  /**
+   * Get the Todo service
+   */
+  async getTodoService(): Promise<TodoService> { // Added
+    await this.ensureInitialized(); // Added
+    return this.todoService!; // Added
+  } // Added
 }
 
 // Export singleton instance

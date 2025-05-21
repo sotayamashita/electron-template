@@ -12,10 +12,13 @@ import {
 } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
+import { DatePicker } from "@/components/ui/date-picker"; // Added
 import { Separator } from "@/components/ui/separator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { trpc } from "@/lib/trpc";
+import { format as formatDate } from "date-fns"; // Added
 import {
+  IconAlertTriangle, // Added for displaying reminder
   IconBrandReact,
   IconBrandTypescript,
   IconBrandVite,
@@ -49,6 +52,9 @@ function App(): React.JSX.Element {
   const { t } = useTranslation();
   const [tasks, setTasks] = useState<Todo[]>([]);
   const [newTitle, setNewTitle] = useState("");
+  const [reminderDate, setReminderDate] = useState<Date | undefined>(undefined); // Added
+  const [reminderTime, setReminderTime] = useState<string>(""); // Added
+
   const pingHandle = async (): Promise<void> => {
     const res = await trpc.ping.query();
     console.log("[renderer] ", res);
@@ -65,10 +71,38 @@ function App(): React.JSX.Element {
   const handleAdd = async (): Promise<void> => {
     const title = newTitle.trim();
     if (!title) return;
+
+    let combinedDateTime: Date | null = null;
+    if (reminderDate) {
+      combinedDateTime = new Date(reminderDate);
+      if (reminderTime) {
+        const [hours, minutes] = reminderTime.split(":").map(Number);
+        if (!isNaN(hours) && !isNaN(minutes)) {
+          combinedDateTime.setHours(hours, minutes, 0, 0); // Set seconds and ms to 0
+        } else {
+          // Handle invalid time format, perhaps show an error
+          console.warn("Invalid time format provided:", reminderTime);
+          // Optionally, don't set time or clear reminderDate if time is mandatory with date
+        }
+      } else {
+        // If only date is set, time defaults to 00:00:00.000 of that date
+        combinedDateTime.setHours(0, 0, 0, 0);
+      }
+    }
+
     try {
-      const updated = await trpc.task.add.mutate({ title });
-      setTasks(updated);
+      // Assuming trpc.task.add.mutate now accepts { title, reminderDateTime }
+      // The actual list update might come from a subscription or re-fetch,
+      // or the mutation itself returns the full list.
+      // For now, we assume `updated` is the new list of tasks.
+      const updated = await trpc.task.add.mutate({
+        title,
+        reminderDateTime: combinedDateTime,
+      });
+      setTasks(updated); // This line might need adjustment based on actual API response
       setNewTitle("");
+      setReminderDate(undefined);
+      setReminderTime("");
     } catch (err) {
       console.error("add error", err);
     }
@@ -138,6 +172,32 @@ function App(): React.JSX.Element {
                     <IconPlus /> {t("todo.add")}
                   </Button>
                 </div>
+                {/* Reminder Inputs */}
+                <div className="flex items-center gap-2">
+                  <DatePicker
+                    date={reminderDate}
+                    setDate={setReminderDate}
+                    className="w-auto flex-grow"
+                  />
+                  <Input
+                    type="time"
+                    value={reminderTime}
+                    onChange={(e) => setReminderTime(e.target.value)}
+                    className="w-auto flex-grow-[0.5]" // Adjusted width
+                  />
+                  {(reminderDate || reminderTime) && (
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => {
+                        setReminderDate(undefined);
+                        setReminderTime("");
+                      }}
+                    >
+                      {t("todo.clear_reminder")}
+                    </Button>
+                  )}
+                </div>
 
                 {tasks.length > 0 ? (
                   <div className="rounded-md border">
@@ -145,22 +205,35 @@ function App(): React.JSX.Element {
                       <div key={task.id}>
                         {index > 0 && <Separator />}
                         <div className="flex items-center justify-between p-4">
-                          <div className="flex items-center gap-3">
-                            <Checkbox
-                              id={`task-${task.id}`}
-                              checked={task.completed}
-                              onCheckedChange={() => handleToggle(task.id)}
-                            />
-                            <label
-                              htmlFor={`task-${task.id}`}
-                              className={`text-sm leading-none font-medium peer-disabled:cursor-not-allowed peer-disabled:opacity-70 ${
-                                task.completed
-                                  ? "text-muted-foreground line-through"
-                                  : "text-foreground"
-                              }`}
-                            >
-                              {task.title}
-                            </label>
+                          <div className="flex flex-col gap-1"> {/* Changed to flex-col */}
+                            <div className="flex items-center gap-3">
+                              <Checkbox
+                                id={`task-${task.id}`}
+                                checked={task.completed}
+                                onCheckedChange={() => handleToggle(task.id)}
+                              />
+                              <label
+                                htmlFor={`task-${task.id}`}
+                                className={`text-sm leading-none font-medium peer-disabled:cursor-not-allowed peer-disabled:opacity-70 ${
+                                  task.completed
+                                    ? "text-muted-foreground line-through"
+                                    : "text-foreground"
+                                }`}
+                              >
+                                {task.title}
+                              </label>
+                            </div>
+                            {/* Display Reminder */}
+                            {task.reminderDateTime && (
+                              <div className="ml-7 text-xs text-muted-foreground flex items-center gap-1">
+                                <IconAlertTriangle className="h-3 w-3" />
+                                {t("todo.reminder_at")}{" "}
+                                {formatDate(
+                                  new Date(task.reminderDateTime), // Ensure it's a Date object
+                                  "PPp", // e.g., Mar 15, 2024, 10:30 AM
+                                )}
+                              </div>
+                            )}
                           </div>
                           <Button
                             variant="ghost"

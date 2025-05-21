@@ -13,7 +13,9 @@
     "complete": "Complete",
     "delete": "Delete",
     "task_count": "{{count}} task",
-    "task_count_plural": "{{count}} tasks total"
+    "task_count_plural": "{{count}} tasks total",
+    "clear_reminder": "Clear Reminder",
+    "reminder_at": "Reminder at"
   },
   "theme": {
     "title": "Theme",

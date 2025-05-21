@@ -37,6 +37,11 @@ async function initializeApp(): Promise<void> {
     attachTRPC("trpc", appRouter);
 
     console.log("tRPC router attached to IPC");
+
+    // Load and reschedule notifications
+    const todoService = await container.getTodoService(); // Get TodoService instance
+    await todoService.loadAndRescheduleAllNotifications(); // Call the method
+    console.log("Loaded and rescheduled all notifications.");
   } catch (error) {
     console.error("Failed to initialize application:", error);
     throw error;

@@ -13,7 +13,9 @@
     "complete": "完了",
     "delete": "削除",
     "task_count": "{{count}}件のタスク",
-    "task_count_plural": "合計{{count}}件のタスク"
+    "task_count_plural": "合計{{count}}件のタスク",
+    "clear_reminder": "リマインダーをクリア",
+    "reminder_at": "リマインダー:"
   },
   "theme": {
     "title": "テーマ",
