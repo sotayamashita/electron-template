@@ -1,13 +1,23 @@
 import { NotFoundError } from "#shared/errors.js";
 import type { TypedStore } from "@main/persistence/store.js";
 import { TodoRepository } from "@main/repository/todo-repository.js";
-import { beforeEach, describe, expect, test } from "vitest";
+import {
+  beforeEach,
+  describe,
+  expect,
+  test,
+  type MockedFunction,
+} from "vitest";
 import { createTodo } from "../../factories/todo.factory.js";
 import { createMockStore } from "../../mocks/store.mock.js";
 
+type MockedStore = {
+  [K in keyof TypedStore]: MockedFunction<TypedStore[K]>;
+};
+
 describe("TodoRepository", () => {
   let repository: TodoRepository;
-  let mockStore: jest.Mocked<TypedStore>;
+  let mockStore: MockedStore;
 
   beforeEach(() => {
     mockStore = createMockStore();

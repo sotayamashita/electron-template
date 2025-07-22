@@ -45,22 +45,22 @@ describe("Todo Domain", () => {
       expect(() => TodoSchema.parse(invalidTodo)).toThrow();
     });
 
-    test("rejects empty id", () => {
-      const invalidTodo = {
+    test("accepts empty id", () => {
+      const validTodo = {
         id: "",
-        title: "Empty id",
+        title: "Empty id is valid",
         completed: false,
       };
-      expect(() => TodoSchema.parse(invalidTodo)).not.toThrow(); // string allows empty string
+      expect(() => TodoSchema.parse(validTodo)).not.toThrow(); // string schema allows empty string
     });
 
-    test("rejects empty title", () => {
-      const invalidTodo = {
+    test("accepts empty title", () => {
+      const validTodo = {
         id: "todo-123",
         title: "",
         completed: false,
       };
-      expect(() => TodoSchema.parse(invalidTodo)).not.toThrow(); // string allows empty string
+      expect(() => TodoSchema.parse(validTodo)).not.toThrow(); // string schema allows empty string
     });
 
     test("rejects non-string id", () => {
