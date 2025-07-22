@@ -1,4 +1,4 @@
-# just-ai
+# electron-vite-react-ts
 
 [![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/sotayamashita/electron-template) [![CI](https://github.com/sotayamashita/just-ai/actions/workflows/ci.yml/badge.svg)](https://github.com/sotayamashita/just-ai/actions/workflows/ci.yml)
 
