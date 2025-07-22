@@ -26,14 +26,6 @@ jobs:
           node-version-file: ".node-version"
           cache: "pnpm"
 
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+      - run: pnpm install --frozen-lockfile
 
-      - name: ESLint
-        run: pnpm lint:check
-
-      - name: Typecheck
-        run: pnpm typecheck
-
-      - name: Prettier
-        run: pnpm format:check
+      - run: pnpm lint
