@@ -24,14 +24,12 @@ In Electron applications, communication between Main and Renderer processes (IPC
 ## Decision
 
 1. **Custom tRPC-over-IPC Adapter Development**
-
    - Implement our own simple adapter instead of third-party libraries like `electron-trpc` or `trpc-electron`
    - Conduct all communications through a single IPC channel (`trpc`)
    - In the main process, register routers using the `attachTRPC(channel, router)` function
    - In the preload script, expose using `contextBridge.exposeInMainWorld('trpc', client)`
 
 2. **Centralized Shared Type Definitions**
-
    - Place all shared data types and router definitions in `src/shared/trpc.ts`
    - Implement runtime validation using Zod schemas
    - Make shared types importable from both processes
@@ -51,12 +49,10 @@ In Electron applications, communication between Main and Renderer processes (IPC
    ```
 
 4. **Adoption of a Single Channel**
-
    - Use a single `trpc` channel instead of multiple individual channels
    - Messages formatted as `{ path: 'router.procedure', input: any }`
 
 5. **Client Implementation**
-
    - Implement using `createTRPCClient` from `@trpc/client` with a custom link
    - Call from renderer as `trpc.task.list.query()`
 

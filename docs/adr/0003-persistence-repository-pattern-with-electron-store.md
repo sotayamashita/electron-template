@@ -28,32 +28,27 @@ Key requirements:
 ## Decision
 
 1. **electron-store as Primary Persistence Mechanism**
-
    - Adopt `electron-store` for JSON-based persistence in the Main process
    - Implement lazy-loading via dynamic ESM imports to optimize startup time
    - Create a type-safe wrapper with a defined schema for all stored data
 
 2. **Repository Pattern for Data Access**
-
    - Implement domain-specific repositories:
      - `TodoRepository`: CRUD operations for todo list items
      - `ThemeRepository`: Get/set theme preferences
    - Each repository exposes async methods that handle store access
 
 3. **tRPC Router Integration**
-
    - Refactor tRPC procedures to delegate to repository methods
    - Return complete updated lists after mutations for consistency
    - Define shared schemas in `trpc.ts` for both Main and Renderer processes
 
 4. **Single Source of Truth**
-
    - Store all persistent data exclusively in the Main process
    - Remove Renderer-side persistence (localStorage)
    - Maintain UI state synchronization via tRPC procedures
 
 5. **Type-Safe Access**
-
    - Define consistent schema types shared between processes
    - Use Zod for runtime validation of data
    - Leverage TypeScript for compile-time safety

@@ -81,12 +81,10 @@ Renovate の自動マージ機能を有効にするには、GitHub リポジト�
 このドキュメントの情報が古くなった場合は、以下の手順で最新情報を確認し更新してください：
 
 1. **公式ドキュメントの確認**
-
    - [Renovate 公式ドキュメント](https://docs.renovatebot.com/)（特に[Automerge設定ガイド](https://docs.renovatebot.com/key-concepts/automerge/)）
    - [GitHub ブランチ保護ルール公式ドキュメント](https://docs.github.com/ja/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches/about-protected-branches)
 
 2. **最新情報の検索**
-
    - OpenAI o3 with search ツールで以下のようなプロンプトを使用：
      ```
      「Renovate 自動マージ GitHub ブランチ保護ルール 最新設定 2025」
@@ -94,7 +92,6 @@ Renovate の自動マージ機能を有効にするには、GitHub リポジト�
      ```
 
 3. **実環境での検証**
-
    - 可能であれば、テストリポジトリで実際に設定を適用して動作確認
    - 本番リポジトリに適用する前に、小規模な変更で検証
 
