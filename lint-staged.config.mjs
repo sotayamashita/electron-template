@@ -12,9 +12,9 @@ const config = {
     //     see https://www.typescriptlang.org/docs/handbook/compiler-options.html#tsconfigjson-files-are-ignored-when-input-files-are-specified
     //     and https://github.com/okonet/lint-staged/issues/825 .
     //     Wrapping the script in `bash -c` prevents that filename injection,
-    //     allowing `npm run typecheck` (aka `tsc --noEmit`) to run against the
+    //     allowing `pnpm run lint:typecheck` (aka `tsc --noEmit`) to run against the
     //     entire project and honour the project’s tsconfig.
-    "bash -c 'npm run typecheck'",
+    "bash -c 'pnpm run lint:typecheck'",
   ],
   "!*.{js,jsx,ts,tsx}": ["prettier --write --ignore-unknown"],
 };
