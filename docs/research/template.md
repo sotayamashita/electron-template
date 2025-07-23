@@ -36,7 +36,6 @@ tags: [electron, 関連タグ1, 関連タグ2]
   - **ライブラリ／ツール:** `ライブラリ名2` — (簡潔な説明)
     - 参考リンク: GitHub https://github.com/…
 - **分類: 実装言語**
-
   - **言語:** TypeScript — 型安全な JavaScript のスーパーセット
     - 参考リンク: https://www.typescriptlang.org/
 

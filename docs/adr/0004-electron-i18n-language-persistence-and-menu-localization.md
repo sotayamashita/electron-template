@@ -23,32 +23,26 @@ Our Electron + React desktop application must support multiple languages in **bo
 ## Decision
 
 1. **Persistence**
-
    - Store the selected language in `electron-store` under `userLanguage` (default: `"en"`).
    - Access is wrapped by `langRepository` to ensure only `SUPPORTED_LOCALES` are stored.
 
 2. **i18n libraries**
-
    - **Main process**: `i18next` + `i18next‑fs‑backend` to read JSON resources from `locales/{lng}/{ns}.json`.
    - **Renderer**: `i18next` + `react‑i18next`; translations are bundled at build‑time using `import.meta.glob("/locales/**.json", { eager: true })`.
 
 3. **Initial language bootstrap**
-
    - The preload script synchronously calls `langRepository.get()` and exposes `window.initialLng`.
    - Renderer executes `bootstrapI18n(window.initialLng)` _before_ React renders, preventing flicker.
 
 4. **IPC layer (tRPC)**
-
    - Add a `lang` router with `get` and `set` procedures.
    - Renderer invokes `lang.set(lng)` immediately after `i18n.changeLanguage(lng)` to persist changes.
 
 5. **Native menu localisation**
-
    - Main holds a dedicated `i18next` instance; menu templates use `i18n.t('Menu.File')`, etc.
    - On `i18n.languageChanged`, the menu is rebuilt and reapplied via `Menu.setApplicationMenu`.
 
 6. **Runtime language switching sequence**
-
    1. Renderer → `i18n.changeLanguage(lng)`
    2. Renderer → `trpc.lang.set(lng)`
    3. Main persists to store, calls `i18n.changeLanguage(lng)`, rebuilds menu, broadcasts `languageChanged`.

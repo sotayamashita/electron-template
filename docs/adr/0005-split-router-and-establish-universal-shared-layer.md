@@ -38,7 +38,6 @@ As the application grows, more routers and shared constants will be added. We ne
    ```
 
 2. **Limit `src/shared/` to universal code.**
-
    - Zod schemas, domain types, and pure constants move to `src/shared/domain/**` and `src/shared/constants.ts`.
    - `src/shared/index.ts` re‑exports types only; it must not export runtime values that depend on Node or Electron.
 
@@ -91,7 +90,6 @@ As the application grows, more routers and shared constants will be added. We ne
    This allows us to detect imports from the old `src/shared/trpc` and enforce that the renderer only imports types, not values.
 
 4. **Introduce a single IPC adapter layer.**
-
    - `src/main/adapter/index.ts` – wraps `appRouter` and registers the single `"trpc"` channel.
    - `src/preload/index.ts` – exposes a typed caller via `contextBridge`.
    - `src/renderer/lib/trpc.ts` – creates a tRPC proxy client and imports `type { AppRouter }` only.
