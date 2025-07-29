@@ -86,7 +86,7 @@
     "inquirer": "^12.8.2",
     "jsdom": "^26.1.0",
     "lint-staged": "^16.1.2",
-    "lucide-react": "^0.532.0",
+    "lucide-react": "^0.533.0",
     "npm-run-all2": "^8.0.4",
     "prettier": "^3.6.2",
     "prettier-plugin-organize-imports": "^4.1.0",
