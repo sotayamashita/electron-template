@@ -61,7 +61,7 @@ importers:
         version: 3.3.1
       zod:
         specifier: ^4.0.5
-        version: 4.0.7
+        version: 4.0.17
     devDependencies:
       '@commitlint/cli':
         specifier: ^19.8.1
@@ -4825,8 +4825,8 @@ packages:
     resolution: {integrity: sha512-9qv4rlDiopXg4E69k+vMHjNN63YFMe9sZMrdlvKnCjlCRWeCBswPPMPUfx+ipsAWq1LXHe70RcbaHdJJpS6hyQ==}
     engines: {node: '>= 10'}
 
-  zod@4.0.7:
-    resolution: {integrity: sha512-AKvYUuvqmyRf21eNxjuO++WPrQHhWg8i/4POzBLL//qVhcxA6gOptSDxXKM2S+uh8FtPV3MU/QZKOxqwsRV5kg==}
+  zod@4.0.17:
+    resolution: {integrity: sha512-1PHjlYRevNxxdy2JZ8JcNAw7rX8V9P1AKkP+x/xZfxB0K5FYfuV+Ug6P/6NVSR2jHQ+FzDDoDHS04nYUsOIyLQ==}
 
 snapshots:
 
@@ -9918,4 +9918,4 @@ snapshots:
       compress-commons: 4.1.2
       readable-stream: 3.6.2
 
-  zod@4.0.7: {}
+  zod@4.0.17: {}
